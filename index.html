@@ -726,25 +726,25 @@ function plutoLon(dS, sun){
 
 /* orbital elements (deg / AU) as functions of dS */
 const PLANETS=[
-  {key:'Mercury',glyph:'☿',rules:'mind & communication',
+  {key:'Mercury',glyph:'☿',rules:'the way you think',
    N:d=>48.3313+3.24587e-5*d, i:d=>7.0047+5.00e-8*d, w:d=>29.1241+1.01444e-5*d,
    a:()=>0.387098, e:d=>0.205635+5.59e-10*d, M:d=>168.6562+4.0923344368*d},
-  {key:'Venus',glyph:'♀',rules:'love & values',
+  {key:'Venus',glyph:'♀',rules:'the way you love',
    N:d=>76.6799+2.46590e-5*d, i:d=>3.3946+2.75e-8*d, w:d=>54.8910+1.38374e-5*d,
    a:()=>0.723330, e:d=>0.006773-1.302e-9*d, M:d=>48.0052+1.6021302244*d},
-  {key:'Mars',glyph:'♂',rules:'drive & desire',
+  {key:'Mars',glyph:'♂',rules:'the way you chase what you want',
    N:d=>49.5574+2.11081e-5*d, i:d=>1.8497-1.78e-8*d, w:d=>286.5016+2.92961e-5*d,
    a:()=>1.523688, e:d=>0.093405+2.516e-9*d, M:d=>18.6021+0.5240207766*d},
-  {key:'Jupiter',glyph:'♃',rules:'growth & luck',
+  {key:'Jupiter',glyph:'♃',rules:'the way you grow',
    N:d=>100.4542+2.76854e-5*d, i:d=>1.3030-1.557e-7*d, w:d=>273.8777+1.64505e-5*d,
    a:()=>5.20256, e:d=>0.048498+4.469e-9*d, M:d=>19.8950+0.0830853001*d},
-  {key:'Saturn',glyph:'♄',rules:'discipline & lessons',
+  {key:'Saturn',glyph:'♄',rules:'the way you build',
    N:d=>113.6634+2.38980e-5*d, i:d=>2.4886-1.081e-7*d, w:d=>339.3939+2.97661e-5*d,
    a:()=>9.55475, e:d=>0.055546-9.499e-9*d, M:d=>316.9670+0.0334442282*d},
-  {key:'Uranus',glyph:'♅',rules:'change & awakening',
+  {key:'Uranus',glyph:'♅',rules:'the way you break the mold',
    N:d=>74.0005+1.3978e-5*d, i:d=>0.7733+1.9e-8*d, w:d=>96.6612+3.0565e-5*d,
    a:d=>19.18171-1.55e-8*d, e:d=>0.047318+7.45e-9*d, M:d=>142.5905+0.011725806*d},
-  {key:'Neptune',glyph:'♆',rules:'dreams & intuition',
+  {key:'Neptune',glyph:'♆',rules:'the way you dream',
    N:d=>131.7806+3.0173e-5*d, i:d=>1.7700-2.55e-7*d, w:d=>272.8461-6.027e-6*d,
    a:d=>30.05826+3.313e-8*d, e:d=>0.008606+2.15e-9*d, M:d=>260.2471+0.005995147*d}
 ];
@@ -773,14 +773,50 @@ function tzOffsetMin(date, tz){
 const statusEl=document.getElementById('status');
 function setStatus(msg,err){ statusEl.textContent=msg||''; statusEl.classList.toggle('err',!!err); }
 
+/* resolve an IANA timezone from coordinates (open-meteo, DST-aware downstream) */
+async function tzFromCoords(lat,lon){
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&timezone=auto&forecast_days=1&current=temperature_2m');
+    if(r.ok){ const j=await r.json(); if(j.timezone) return j.timezone; }
+  }catch(e){}
+  return null; // caller falls back to a longitude-based offset
+}
+
 async function geocode(city){
-  const url='https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&format=json&name='+encodeURIComponent(city);
-  const r=await fetch(url);
-  if(!r.ok) throw new Error('lookup failed');
-  const j=await r.json();
-  if(!j.results||!j.results.length) throw new Error('city not found');
-  const g=j.results[0];
-  return {lat:g.latitude, lon:g.longitude, tz:g.timezone, label:[g.name,g.admin1,g.country].filter(Boolean).join(', ')};
+  /* 1) open-meteo geocoder — fast, ships a timezone, great for cities */
+  try{
+    const r=await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&format=json&name='+encodeURIComponent(city));
+    if(r.ok){
+      const j=await r.json();
+      if(j.results&&j.results.length){
+        const g=j.results[0];
+        return {lat:g.latitude, lon:g.longitude, tz:g.timezone, label:[g.name,g.admin1,g.country].filter(Boolean).join(', ')};
+      }
+    }
+  }catch(e){}
+
+  /* 2) Photon (OpenStreetMap) — deep coverage of small towns & villages.
+     Try the full query, then just the town name (handles "Town, UK"-style
+     abbreviations that confuse the geocoder). */
+  const tries=[city];
+  const head=city.split(',')[0].trim();
+  if(head && head!==city) tries.push(head);
+
+  for(const q of tries){
+    let feat;
+    try{
+      const r=await fetch('https://photon.komoot.io/api/?limit=1&lang=en&q='+encodeURIComponent(q));
+      if(r.ok){ const j=await r.json(); feat=(j.features||[])[0]; }
+    }catch(e){}
+    if(feat){
+      const [lon,lat]=feat.geometry.coordinates;
+      const p=feat.properties||{};
+      const tz=await tzFromCoords(lat,lon);
+      const label=[p.name, p.state, p.country].filter(Boolean).join(', ') || city;
+      return {lat, lon, tz, label};
+    }
+  }
+  throw new Error('city not found');
 }
 
 document.getElementById('calcBtn').addEventListener('click', run);
@@ -813,7 +849,9 @@ async function run(){
       const g=await geocode(city);
       lat=g.lat; lon=g.lon; label=g.label;
       const guessUTC=Date.UTC(Y,Mo-1,Da,H,Mi);
-      offMin=tzOffsetMin(new Date(guessUTC), g.tz);
+      /* DST-aware offset from the IANA zone; if unknown, use the location's
+         mean solar offset (4 min per degree of longitude) as a fallback */
+      offMin = g.tz ? tzOffsetMin(new Date(guessUTC), g.tz) : Math.round(lon*4);
     }
   }catch(e){
     setStatus("Couldn't find that city — try 'City, Country' or enter coordinates manually.",true);
@@ -828,13 +866,13 @@ async function run(){
 
   /* [planet glyph, name, rules, sign] — big three first, then the rest */
   const placements=[];
-  placements.push(['☉','Sun','identity & vitality', signOf(sun.lon)]);
+  placements.push(['☉','Sun','the way you shine', signOf(sun.lon)]);
   if(!noTime){
-    placements.push(['☽','Moon','emotions & inner world', signOf(moonLon(dS,sun))]);
-    placements.push(['↑','Rising','how you meet the world', signOf(ascendant(dJ,lat,lon))]);
+    placements.push(['☽','Moon','the way you feel', signOf(moonLon(dS,sun))]);
+    placements.push(['↑','Rising','the way you arrive', signOf(ascendant(dJ,lat,lon))]);
   }
   PLANETS.forEach(p=>placements.push([p.glyph,p.key,p.rules, signOf(planetLon(p,dS,sun))]));
-  placements.push(['♇','Pluto','power & transformation', signOf(plutoLon(dS,sun))]);
+  placements.push(['♇','Pluto','the way you transform', signOf(plutoLon(dS,sun))]);
 
   /* render */
   const box=document.getElementById('placements');
@@ -843,7 +881,7 @@ async function run(){
     const div=document.createElement('div');
     div.className='place';
     div.innerHTML='<div class="pg">'+s.glyph+'</div><div class="pt">'+
-      '<div class="role">'+pg+' '+planet+' · '+rules+'</div>'+
+      '<div class="role">'+pg+' '+planet+', '+rules+'</div>'+
       '<div class="sign">'+s.name+'</div>'+
       '<div class="trait">'+s.trait+'</div></div>';
     box.appendChild(div);
