@@ -1,0 +1,16 @@
+{
+  "name": "sip & stars — astrology by MD",
+  "short_name": "sip & stars",
+  "description": "Birth chart readings over a coffee — in Tallinn or online. Calculate your free chart and book a reading.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4EFE3",
+  "theme_color": "#1C6B41",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

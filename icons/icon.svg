@@ -1,0 +1,13 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="112" fill="#1C6B41"/>
+  <!-- coffee cup -->
+  <g stroke="#F4EFE3" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M168 232 L344 232 L322 330 Q318 360 256 360 Q194 360 190 330 Z"/>
+    <path d="M344 250 Q392 250 392 288 Q392 326 344 326"/>
+    <path d="M206 372 L306 372"/>
+  </g>
+  <!-- pink star pouring -->
+  <path d="M256 96 l16 40 43 4 -32 28 10 43 -37 -23 -37 23 10 -43 -32 -28 43 -4 z" fill="#F2A8C8"/>
+  <!-- small lime star -->
+  <path d="M150 150 l9 22 24 2 -18 16 6 24 -21 -13 -21 13 6 -24 -18 -16 24 -2 z" fill="#CDEF49"/>
+</svg>
