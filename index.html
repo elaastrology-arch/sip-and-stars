@@ -342,6 +342,38 @@
   .foot-col a:hover{color:var(--pink)}
   .foot-bottom{margin-top:34px;border-top:1px solid #34322c;padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#807b70;font-size:.82rem}
 
+  /* ===== how it works ===== */
+  #how{background:var(--cream)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:780px){.steps{grid-template-columns:1fr}}
+  .step{border:1.8px solid var(--ink);border-radius:var(--radius);padding:28px 24px;background:var(--cream-2);position:relative;overflow:hidden;transition:transform .18s ease}
+  .step:hover{transform:translateY(-5px)}
+  .step:nth-child(2){background:var(--pink-soft)}
+  .step .snum{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.6rem;color:var(--hot);line-height:1}
+  .step h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;color:var(--green);margin:10px 0 8px;letter-spacing:-.01em}
+  .step p{font-weight:500;color:var(--ink-soft);font-size:.96rem}
+  .step .sglyph{position:absolute;top:24px;right:20px;font-size:1.5rem;opacity:.5}
+
+  /* ===== trust strip ===== */
+  .trust{background:var(--green);color:var(--cream);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:38px 0}
+  .trust-grid{display:flex;justify-content:space-around;gap:20px;flex-wrap:wrap;text-align:center}
+  .trust .ti{display:flex;flex-direction:column;gap:3px;min-width:120px}
+  .trust .tnum{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.1rem;color:var(--lime);line-height:1}
+  .trust .tlabel{font-weight:600;font-size:.86rem;color:var(--cream);opacity:.9}
+
+  /* ===== FAQ ===== */
+  #faq{background:var(--cream-2);border-top:2px solid var(--ink)}
+  .faq-list{max-width:760px;margin:0 auto;display:grid;gap:14px}
+  .faq-item{border:1.8px solid var(--ink);border-radius:14px;background:var(--cream);overflow:hidden}
+  .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:18px 20px;
+    font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:1.04rem;color:var(--green);
+    display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .faq-q .fic{transition:transform .22s ease;color:var(--hot);font-size:1.5rem;flex:none;line-height:1}
+  .faq-item.open .fic{transform:rotate(45deg)}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+  .faq-item.open .faq-a{max-height:360px}
+  .faq-a p{padding:0 20px 18px;color:var(--ink-soft);font-weight:500;line-height:1.6}
+
   /* ===== reveal on scroll ===== */
   .reveal{opacity:0;transform:translateY(18px);transition:opacity .65s ease,transform .65s ease}
   .reveal.in{opacity:1;transform:none}
@@ -519,6 +551,39 @@
   </div>
 </section>
 
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="label">How it works</div>
+        <h2 class="display">Three steps<br>to your stars</h2>
+      </div>
+      <p>No cosmic homework, no jargon to learn first. You bring your birth details and your questions — I bring the chart and the conversation.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="sglyph">☕</span>
+        <div class="snum">01</div>
+        <h3>Book your seat</h3>
+        <p>Pick in person in Tallinn or online from anywhere, choose a time that suits you, and tell me which reading you're after.</p>
+      </div>
+      <div class="step">
+        <span class="sglyph">✦</span>
+        <div class="snum">02</div>
+        <h3>Share your details</h3>
+        <p>Send your birth date, time and city. I draw up your chart and study it properly before we ever sit down.</p>
+      </div>
+      <div class="step">
+        <span class="sglyph">♥</span>
+        <div class="snum">03</div>
+        <h3>Sip &amp; read</h3>
+        <p>We meet over a drink and I walk you through your sky — what it means for you, in plain language, with room for all your questions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CALCULATOR -->
 <section id="calculator" class="calc-sec">
   <div class="wrap calc-grid">
@@ -610,6 +675,16 @@
   </div>
 </section>
 
+<!-- TRUST STRIP -->
+<div class="trust">
+  <div class="wrap trust-grid">
+    <div class="ti"><span class="tnum">18+ yrs</span><span class="tlabel">reading the sky</span></div>
+    <div class="ti"><span class="tnum">EN · ES</span><span class="tlabel">bilingual readings</span></div>
+    <div class="ti"><span class="tnum">Tallinn</span><span class="tlabel">in person &amp; online</span></div>
+    <div class="ti"><span class="tnum">0</span><span class="tlabel">jargon, ever</span></div>
+  </div>
+</div>
+
 <!-- JOURNAL -->
 <section id="journal">
   <div class="wrap">
@@ -626,6 +701,45 @@
       <article class="jcard j4 reveal" tabindex="0" role="button" aria-label="Read: Are You Two Compatible?" onclick="openArticle('art-9')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-9')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="52" r="22"/><circle cx="60" cy="52" r="22"/><path d="M50 40 l2.2 6.4 6.8.5-5.3 4.2 1.8 6.6-5.5-3.8-5.5 3.8 1.8-6.6-5.3-4.2 6.8-.5z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag">Compatibility</span><h3>Are You Two Compatible?</h3><p>Synastry, honestly — beyond 'we're both fire signs.'</p><span class="jread">Read &rarr;</span></div></article>
       <article class="jcard j5 reveal" tabindex="0" role="button" aria-label="Read: What Your Birthday Chart Means" onclick="openArticle('art-10')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-10')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="11"/><line x1="61.0" y1="50.0" x2="67.0" y2="50.0"/><line x1="57.8" y1="57.8" x2="62.0" y2="62.0"/><line x1="50.0" y1="61.0" x2="50.0" y2="67.0"/><line x1="42.2" y1="57.8" x2="38.0" y2="62.0"/><line x1="39.0" y1="50.0" x2="33.0" y2="50.0"/><line x1="42.2" y1="42.2" x2="38.0" y2="38.0"/><line x1="50.0" y1="39.0" x2="50.0" y2="33.0"/><line x1="57.8" y1="42.2" x2="62.0" y2="38.0"/><circle cx="50" cy="50" r="30" stroke-dasharray="3 5"/><circle cx="80" cy="50" r="3.6" fill="currentColor" stroke="none"/><path d="M80 50 l-7 -4 M80 50 l-4 7"/></svg></div><div class="jbody"><span class="jtag">Your year</span><h3>What Your Birthday Chart Means</h3><p>Your personal new year comes with a forecast.</p><span class="jread">Read &rarr;</span></div></article>
       <article class="jcard j1 reveal" tabindex="0" role="button" aria-label="Read: Astrocartography: Where Are You Luckiest?" onclick="openArticle('art-11')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-11')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="52" r="33"/><ellipse cx="50" cy="52" rx="13" ry="33"/><line x1="17" y1="52" x2="83" y2="52"/><path d="M21 38 q29 -10 58 0"/><path d="M21 66 q29 10 58 0"/><path d="M64 33 l1.8 4 4.3.5-3.2 2.9.9 4.2-3.8-2.2-3.8 2.2.9-4.2-3.2-2.9 4.3-.5z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag">Where to live</span><h3>Astrocartography: Where Are You Luckiest?</h3><p>The 'where should I live' map taking over your feed.</p><span class="jread">Read &rarr;</span></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="label">Good to know</div>
+        <h2 class="display">Questions,<br>answered</h2>
+      </div>
+      <p>Everything you might be wondering before you book. Still curious about something? Just email me.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Do I need to know my exact birth time?<span class="fic">+</span></button>
+        <div class="faq-a"><p>For your full chart — including your Moon and Rising — yes, even an approximate time helps a lot. Without it I can still read your Sun and the slower planets. Check your birth certificate, or tell me a rough range and we'll work with it.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Where do the in-person readings happen?<span class="fic">+</span></button>
+        <div class="faq-a"><p>In Tallinn, over a coffee, tea, or drink of your choice — I'll share the spot when you book. Not in Tallinn? I read for people anywhere in the world over video, and it's just as personal.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">What languages do you read in?<span class="fic">+</span></button>
+        <div class="faq-a"><p>English and Spanish — whichever feels more like home to you. Just let me know when you book.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">I'm completely new to astrology. Is that okay?<span class="fic">+</span></button>
+        <div class="faq-a"><p>More than okay — it's my favourite kind of reading. Everything is in plain language, no symbols to memorise beforehand. You bring yourself and your questions; I bring the map.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">How do I prepare?<span class="fic">+</span></button>
+        <div class="faq-a"><p>Bring three things: your birth date, your birth time, and your birth city — plus whatever questions are on your mind. That's all I need to read your sky.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">Which reading should I choose?<span class="fic">+</span></button>
+        <div class="faq-a"><p>New to your chart? Start with the <b>House Blend</b> — your full birth chart. Curious about the year ahead? The <b>Refill</b> reads your solar return. Wondering about a relationship? <b>Perfect Pairing</b> looks at two charts together.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1470,7 +1584,16 @@ function openArticle(id){var s=document.getElementById(id);if(!s)return;document
 function closeArticle(){document.getElementById('reader').classList.remove('open');document.body.style.overflow='';}
 document.getElementById('reader').addEventListener('click',function(e){if(e.target===this)closeArticle();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeArticle();});
-(function(){var els=document.querySelectorAll('.sec-head, .card, .jcard, .phil-inner, .about-art, .about > div, .calc-card, .book-head, .calc-intro');els.forEach(function(el){el.classList.add('reveal');});if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in');});return;}var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});els.forEach(function(el){io.observe(el);});})();
+(function(){var els=document.querySelectorAll('.sec-head, .card, .jcard, .phil-inner, .about-art, .about > div, .calc-card, .book-head, .calc-intro, .step, .faq-item');els.forEach(function(el){el.classList.add('reveal');});if(!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('in');});return;}var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});els.forEach(function(el){io.observe(el);});})();
+
+/* FAQ accordion */
+document.querySelectorAll('.faq-q').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var item=btn.parentElement, open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(o){o.classList.remove('open');o.querySelector('.faq-q').setAttribute('aria-expanded','false');});
+    if(!open){ item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+  });
+});
 </script>
 </body>
 </html>
