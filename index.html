@@ -581,12 +581,12 @@
       <a href="#journal">Journal</a>
       <a href="#calculator">Free birth chart</a>
       <a href="#about">About MD</a>
-      <a href="mailto:hello@sipandstars.com">Email</a>
+      <a href="mailto:mariadaniella1605@gmail.com">Email</a>
     </div>
     <div class="foot-col">
       <h4>Find us</h4>
-      <a href="#">Instagram</a>
-      <a href="#">TikTok</a>
+      <a href="https://instagram.com/mdmundi" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://tiktok.com/@mdmundi" target="_blank" rel="noopener">TikTok</a>
     </div>
   </div>
   <div class="wrap foot-bottom">
@@ -749,7 +749,7 @@ async function run(){
 }
 
 /* ---------- BOOKING (Calendly) ---------- */
-/* ⬇️ REPLACE these two links with your real Calendly event URLs to go live. */
+/* Calendly event URLs. Swap in a separate online-event link when ready. */
 const CALENDLY = {
   tallinn: "https://calendly.com/elaastrology/90",
   online:  "https://calendly.com/elaastrology/90"
@@ -773,9 +773,9 @@ function loadBooking(loc){
     calMount.innerHTML=
       '<div class="cal-placeholder">'+
         '<div class="pglyph">'+(loc==='tallinn'?'☕':'✦')+'</div>'+
-        '<h3>Booking for '+where+' opens here</h3>'+
-        '<p>This is where your live Calendly calendar will appear. To switch it on, replace the <code>'+loc+'</code> link in the code with your real Calendly event URL.</p>'+
-        '<a class="btn" href="mailto:hello@sipandstars.com?subject=Booking%20a%20'+loc+'%20reading">Or email me to book →</a>'+
+        '<h3>The calendar didn’t load</h3>'+
+        '<p>Looks like the booking calendar couldn’t load just now — it may be your connection or an ad-blocker. Email me and we’ll find a time for your '+where+' reading.</p>'+
+        '<a class="btn" href="mailto:mariadaniella1605@gmail.com?subject=Booking%20a%20'+loc+'%20reading">Email me to book →</a>'+
       '</div>';
   }
 }
