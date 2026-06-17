@@ -273,7 +273,19 @@
   .place .pg{font-size:1.9rem;line-height:1;width:34px;text-align:center}
   .place .pt .role{font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--hot)}
   .place .pt .sign{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.15rem;color:var(--green);line-height:1.1}
+  .place .pt .sign .deg{font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:.82rem;color:var(--hot);margin-left:6px}
   .place .pt .trait{font-size:.84rem;color:var(--ink-soft);font-weight:500}
+  /* chart wheel */
+  .chart-wheel{display:flex;justify-content:center;margin:0 auto 22px;max-width:380px}
+  .chart-wheel svg{width:100%;height:auto;display:block}
+  .result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .mini-btn{
+    font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:.86rem;cursor:pointer;
+    background:var(--cream);color:var(--green);border:1.6px solid var(--ink);border-radius:999px;
+    padding:9px 16px;transition:background .15s,color .15s,transform .1s;
+  }
+  .mini-btn:hover{background:var(--green);color:var(--cream-2)}
+  .mini-btn:active{transform:translateY(1px)}
   .result-cta{margin-top:18px;text-align:center;font-weight:500;font-size:.92rem;color:var(--ink-soft)}
   .result-cta a{color:var(--hot);font-weight:700;text-decoration:underline}
 
@@ -559,7 +571,12 @@
 
       <div class="result" id="result">
         <div class="result-name" id="resultName"></div>
+        <div class="chart-wheel" id="chartWheel"></div>
         <div class="placements" id="placements"></div>
+        <div class="result-actions">
+          <button type="button" class="mini-btn" id="shareChart">✦ Share my chart</button>
+          <button type="button" class="mini-btn" id="saveChart">☆ Save as image</button>
+        </div>
         <p class="result-cta">Curious what it all <em>means</em>? <a href="#book">Book a House Blend reading →</a></p>
       </div>
     </div>
@@ -1006,33 +1023,115 @@ async function run(){
   const dS=julian(utMs)-2451543.5;      // Schlyter day number (for bodies)
   const sun=sunPos(dS);
 
-  /* [planet glyph, name, rules, sign] — big three first, then the rest */
+  /* {glyph, planet, rules, lon} — big three first, then the rest */
   const placements=[];
-  placements.push(['☉','Sun','the way you shine', signOf(sun.lon)]);
+  placements.push({pg:'☉',planet:'Sun',rules:'the way you shine',lon:sun.lon});
   if(!noTime){
-    placements.push(['☽','Moon','the way you feel', signOf(moonLon(dS,sun))]);
-    placements.push(['↑','Rising','the way you arrive', signOf(ascendant(dJ,lat,lon))]);
+    placements.push({pg:'☽',planet:'Moon',rules:'the way you feel',lon:moonLon(dS,sun)});
+    placements.push({pg:'↑',planet:'Rising',rules:'the way you arrive',lon:ascendant(dJ,lat,lon)});
   }
-  PLANETS.forEach(p=>placements.push([p.glyph,p.key,p.rules, signOf(planetLon(p,dS,sun))]));
-  placements.push(['♇','Pluto','the way you transform', signOf(plutoLon(dS,sun))]);
+  PLANETS.forEach(p=>placements.push({pg:p.glyph,planet:p.key,rules:p.rules,lon:planetLon(p,dS,sun)}));
+  placements.push({pg:'♇',planet:'Pluto',rules:'the way you transform',lon:plutoLon(dS,sun)});
 
-  /* render */
+  /* render placement cards */
   const box=document.getElementById('placements');
   box.innerHTML='';
-  placements.forEach(([pg,planet,rules,s])=>{
+  placements.forEach(({pg,planet,rules,lon})=>{
+    const s=signOf(lon), deg=Math.floor(mod360(lon)%30);
     const div=document.createElement('div');
     div.className='place';
     div.innerHTML='<div class="pg">'+s.glyph+'</div><div class="pt">'+
       '<div class="role">'+pg+' '+planet+', '+rules+'</div>'+
-      '<div class="sign">'+s.name+'</div>'+
+      '<div class="sign">'+s.name+'<span class="deg">'+deg+'°</span></div>'+
       '<div class="trait">'+s.trait+'</div></div>';
     box.appendChild(div);
   });
+
+  /* draw the zodiac wheel */
+  document.getElementById('chartWheel').innerHTML = buildWheel(placements);
+  lastChart={placements, name, label};
+
   document.getElementById('resultName').textContent = (name?name+', here':'Here')+"'s your pour"+(label?' · '+label:'');
   document.getElementById('result').classList.add('show');
   setStatus(noTime?'Add a birth time for your Moon & Rising — the rest is ready.':'');
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
+/* ---------- BIRTH CHART WHEEL (SVG) ---------- */
+function buildWheel(placements){
+  const cx=200, cy=200, rOuter=190, rSign=158, rGlyph=174, rTick=150, rPlanet=120;
+  /* screen position for an ecliptic longitude L: Aries(0°) at left, CCW */
+  const pos=(L,r)=>{ const a=rad(180-mod360(L)); return [cx+r*Math.cos(a), cy-r*Math.sin(a)]; };
+  const sectorColors=['#F2A8C8','#FBF8F0']; // alternating ring tint
+  let svg='<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Your birth chart wheel">';
+  /* 12 sign sectors */
+  for(let i=0;i<12;i++){
+    const L0=i*30, L1=L0+30;
+    const [x0,y0]=pos(L0,rOuter), [x1,y1]=pos(L1,rOuter);
+    const [x2,y2]=pos(L1,rSign),  [x3,y3]=pos(L0,rSign);
+    svg+='<path d="M'+x0+' '+y0+' A'+rOuter+' '+rOuter+' 0 0 0 '+x1+' '+y1+
+         ' L'+x2+' '+y2+' A'+rSign+' '+rSign+' 0 0 1 '+x3+' '+y3+' Z" '+
+         'fill="'+sectorColors[i%2]+'" stroke="#181712" stroke-width="1"/>';
+    const [gx,gy]=pos(L0+15,rGlyph);
+    svg+='<text x="'+gx+'" y="'+gy+'" font-size="15" text-anchor="middle" dominant-baseline="central" fill="#1C6B41" font-family="serif">'+SIGNS[i].glyph+'</text>';
+  }
+  /* inner rings */
+  svg+='<circle cx="200" cy="200" r="'+rSign+'" fill="#FBF8F0" stroke="#181712" stroke-width="1.4"/>';
+  svg+='<circle cx="200" cy="200" r="'+rTick+'" fill="none" stroke="rgba(28,107,65,.25)" stroke-width="1"/>';
+  svg+='<circle cx="200" cy="200" r="92" fill="none" stroke="rgba(28,107,65,.18)" stroke-width="1"/>';
+  /* spokes every 30° */
+  for(let i=0;i<12;i++){ const [ax,ay]=pos(i*30,rTick), [bx,by]=pos(i*30,92); svg+='<line x1="'+ax+'" y1="'+ay+'" x2="'+bx+'" y2="'+by+'" stroke="rgba(28,107,65,.18)" stroke-width="1"/>'; }
+  /* declutter: nudge planets that sit within 7° of the previous one to an inner radius */
+  const sorted=placements.map((p,idx)=>({...p,idx})).sort((a,b)=>mod360(a.lon)-mod360(b.lon));
+  let lastL=-99, ring=0;
+  sorted.forEach(p=>{ if(mod360(p.lon)-lastL<8){ ring=(ring+1)%3; } else { ring=0; } p._r=rPlanet-ring*20; lastL=mod360(p.lon); });
+  /* leader lines + planet glyphs */
+  sorted.forEach(p=>{
+    const [tx,ty]=pos(p.lon,rTick-2), [px,py]=pos(p.lon,p._r);
+    svg+='<line x1="'+tx+'" y1="'+ty+'" x2="'+px+'" y2="'+py+'" stroke="rgba(229,92,154,.55)" stroke-width="1.2"/>';
+    svg+='<circle cx="'+px+'" cy="'+py+'" r="13" fill="#1C6B41" stroke="#181712" stroke-width="1.2"/>';
+    svg+='<text x="'+px+'" y="'+py+'" font-size="13" text-anchor="middle" dominant-baseline="central" fill="#F4EFE3" font-family="serif">'+p.pg+'</text>';
+  });
+  svg+='</svg>';
+  return svg;
+}
+
+/* ---------- SHARE & SAVE CHART ---------- */
+let lastChart=null;
+function chartText(){
+  if(!lastChart) return '';
+  const lines=lastChart.placements.map(p=>{
+    const s=signOf(p.lon), deg=Math.floor(mod360(p.lon)%30);
+    return p.pg+' '+p.planet+': '+s.name+' '+deg+'°';
+  });
+  return 'My birth chart ✦ sip & stars\n'+(lastChart.label?lastChart.label+'\n':'')+'\n'+lines.join('\n')+
+         '\n\nGet yours: https://elaastrology-arch.github.io/sip-and-stars/';
+}
+const shareBtn=document.getElementById('shareChart');
+if(shareBtn) shareBtn.addEventListener('click', async ()=>{
+  const text=chartText();
+  try{
+    if(navigator.share){ await navigator.share({title:'My birth chart — sip & stars', text}); }
+    else{ await navigator.clipboard.writeText(text); shareBtn.textContent='✓ Copied to clipboard'; setTimeout(()=>shareBtn.textContent='✦ Share my chart',1800); }
+  }catch(e){}
+});
+const saveBtn=document.getElementById('saveChart');
+if(saveBtn) saveBtn.addEventListener('click', ()=>{
+  const svgEl=document.querySelector('#chartWheel svg'); if(!svgEl) return;
+  const xml=new XMLSerializer().serializeToString(svgEl);
+  const img=new Image();
+  const svg64='data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(xml)));
+  img.onload=()=>{
+    const sc=2, c=document.createElement('canvas'); c.width=400*sc; c.height=440*sc;
+    const ctx=c.getContext('2d');
+    ctx.fillStyle='#F4EFE3'; ctx.fillRect(0,0,c.width,c.height);
+    ctx.drawImage(img,0,0,400*sc,400*sc);
+    ctx.fillStyle='#1C6B41'; ctx.font='700 '+(20*sc)+'px Georgia,serif'; ctx.textAlign='center';
+    ctx.fillText('sip & stars', 200*sc, 425*sc);
+    const a=document.createElement('a'); a.download='my-birth-chart.png'; a.href=c.toDataURL('image/png'); a.click();
+  };
+  img.src=svg64;
+});
 
 /* ---------- BOOKING (Calendly) ---------- */
 /* Calendly event URLs. Swap in a separate online-event link when ready. */
