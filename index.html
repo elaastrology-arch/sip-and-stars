@@ -199,6 +199,22 @@
   .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .check{display:flex;align-items:center;gap:9px;margin:4px 0 14px;font-weight:500;font-size:.92rem}
   .check input{width:18px;height:18px;accent-color:var(--green)}
+  /* city autocomplete */
+  .ac-wrap{position:relative}
+  .ac-list{
+    position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:40;
+    background:var(--cream-2);border:1.6px solid var(--ink);border-radius:12px;
+    box-shadow:4px 6px 0 rgba(28,107,65,.18);overflow:hidden;display:none;
+  }
+  .ac-list.show{display:block}
+  .ac-item{
+    padding:10px 13px;cursor:pointer;font-size:.95rem;font-weight:500;color:var(--ink);
+    border-bottom:1px solid rgba(28,107,65,.12);display:flex;align-items:center;gap:9px;
+  }
+  .ac-item:last-child{border-bottom:none}
+  .ac-item:hover,.ac-item.active{background:var(--pink-soft)}
+  .ac-item .acpin{color:var(--hot);font-size:.95rem;flex:none}
+  .ac-item .acsub{color:var(--ink-soft);font-weight:500;font-size:.82rem}
   .adv-toggle{background:none;border:none;color:var(--hot);font-weight:700;cursor:pointer;font-size:.88rem;padding:0;margin-bottom:10px;text-decoration:underline}
   .adv{display:none}
   .adv.open{display:block}
@@ -481,7 +497,10 @@
 
       <div class="field">
         <label for="bcity">Birth city</label>
-        <input type="text" id="bcity" placeholder="e.g. Mexico City, Mexico" autocomplete="off">
+        <div class="ac-wrap">
+          <input type="text" id="bcity" placeholder="e.g. Mexico City, Mexico" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cityac">
+          <div class="ac-list" id="cityac" role="listbox"></div>
+        </div>
       </div>
 
       <button type="button" class="adv-toggle" id="advToggle">Enter coordinates manually instead</button>
@@ -819,6 +838,84 @@ async function geocode(city){
   throw new Error('city not found');
 }
 
+/* ---------- CITY AUTOCOMPLETE (Photon) ---------- */
+const cityInput=document.getElementById('bcity');
+const acList=document.getElementById('cityac');
+let acItems=[], acIndex=-1, acTimer=null, acChosen=null;
+
+function acClose(){ acList.classList.remove('show'); acList.innerHTML=''; acItems=[]; acIndex=-1; cityInput.setAttribute('aria-expanded','false'); }
+
+function acLabel(p){ return [p.name, p.state||p.county, p.country].filter(Boolean).join(', '); }
+
+function acRender(features){
+  acItems=features;
+  acIndex=-1;
+  if(!features.length){ acClose(); return; }
+  acList.innerHTML='';
+  features.forEach((f,i)=>{
+    const p=f.properties||{};
+    const main=p.name||'';
+    const sub=[p.state||p.county, p.country].filter(Boolean).join(', ');
+    const div=document.createElement('div');
+    div.className='ac-item'; div.setAttribute('role','option');
+    div.innerHTML='<span class="acpin">✦</span><span><b>'+main+'</b>'+(sub?' <span class="acsub">'+sub+'</span>':'')+'</span>';
+    div.addEventListener('mousedown',(e)=>{ e.preventDefault(); acPick(i); });
+    acList.appendChild(div);
+  });
+  acList.classList.add('show');
+  cityInput.setAttribute('aria-expanded','true');
+}
+
+function acHighlight(){
+  [...acList.children].forEach((c,i)=>c.classList.toggle('active',i===acIndex));
+}
+
+function acPick(i){
+  const f=acItems[i]; if(!f) return;
+  const [lon,lat]=f.geometry.coordinates;
+  const p=f.properties||{};
+  const label=acLabel(p);
+  cityInput.value=label;
+  acChosen={lat, lon, label};
+  acClose();
+}
+
+async function acSearch(q){
+  try{
+    const r=await fetch('https://photon.komoot.io/api/?limit=5&lang=en&q='+encodeURIComponent(q));
+    if(!r.ok) return;
+    const j=await r.json();
+    const all=(j.features||[]).filter(f=>(f.properties||{}).name);
+    // prefer real places (cities/towns/villages); fall back to all if none
+    const isPlace=f=>{
+      const p=f.properties||{}, k=p.osm_key, v=p.type;
+      return k==='place' || ['city','town','village','hamlet','municipality','locality','region','state','country'].includes(v);
+    };
+    const places=all.filter(isPlace);
+    const feats=(places.length?places:all).slice(0,5);
+    if(cityInput.value.trim().length>=2) acRender(feats);
+  }catch(e){}
+}
+
+cityInput.addEventListener('input',()=>{
+  acChosen=null; // typing invalidates a previous pick
+  const q=cityInput.value.trim();
+  clearTimeout(acTimer);
+  if(q.length<2){ acClose(); return; }
+  acTimer=setTimeout(()=>acSearch(q), 220);
+});
+
+cityInput.addEventListener('keydown',(e)=>{
+  if(!acList.classList.contains('show')) return;
+  if(e.key==='ArrowDown'){ e.preventDefault(); acIndex=Math.min(acIndex+1,acItems.length-1); acHighlight(); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); acIndex=Math.max(acIndex-1,0); acHighlight(); }
+  else if(e.key==='Enter'){ if(acIndex>=0){ e.preventDefault(); acPick(acIndex); } }
+  else if(e.key==='Escape'){ acClose(); }
+});
+
+cityInput.addEventListener('blur',()=>setTimeout(acClose,120));
+document.addEventListener('click',(e)=>{ if(!e.target.closest('.ac-wrap')) acClose(); });
+
 document.getElementById('calcBtn').addEventListener('click', run);
 
 async function run(){
@@ -846,7 +943,13 @@ async function run(){
       const city=document.getElementById('bcity').value.trim();
       if(!city){ setStatus('Add your birth city (or switch to coordinates).',true); return; }
       setStatus('Finding your city…');
-      const g=await geocode(city);
+      /* use the exact coords if a suggestion was picked; else geocode the text */
+      let g;
+      if(acChosen && acChosen.label===city){
+        g={lat:acChosen.lat, lon:acChosen.lon, label:acChosen.label, tz:await tzFromCoords(acChosen.lat,acChosen.lon)};
+      }else{
+        g=await geocode(city);
+      }
       lat=g.lat; lon=g.lon; label=g.label;
       const guessUTC=Date.UTC(Y,Mo-1,Da,H,Mi);
       /* DST-aware offset from the IANA zone; if unknown, use the location's
