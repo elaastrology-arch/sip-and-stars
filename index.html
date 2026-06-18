@@ -210,10 +210,16 @@
   .card p{font-weight:500;font-size:.98rem;flex:1}
   .card .price{margin-top:18px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.1rem}
   .card.c3 .price{color:var(--lime)}
-  .card .card-cta{margin-top:14px;font-weight:700;display:inline-flex;align-items:center;gap:7px;font-size:.95rem}
+  .card .card-actions{margin-top:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .card .card-cta{font-weight:700;display:inline-flex;align-items:center;gap:7px;font-size:.95rem;transition:gap .15s}
   .card.c1 .card-cta,.card.c2 .card-cta{color:var(--hot)}
   .card.c3 .card-cta{color:var(--lime)}
   .card .card-cta:hover{gap:12px}
+  .card .card-link{background:none;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.92rem;
+    padding:0;text-decoration:underline;text-underline-offset:3px;transition:opacity .15s}
+  .card.c1 .card-link,.card.c2 .card-link{color:var(--green)}
+  .card.c3 .card-link{color:var(--cream)}
+  .card .card-link:hover{opacity:.65}
 
   /* ---------- CALCULATOR ---------- */
   .calc-sec{background:var(--pink);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
@@ -526,7 +532,10 @@
         <span class="sub">Your birth chart · 90 min</span>
         <p>Your cosmic blueprint, neat. I read the chart you were born under — the energies you arrived with and the natural gifts wired into you from the very start.</p>
         <span class="price">€120</span>
-        <a href="#book" class="card-cta">Book this →</a>
+        <div class="card-actions">
+          <button type="button" class="card-link" onclick="openArticle('read-blend')">What's it about?</button>
+          <a href="#book" class="card-cta">Book this →</a>
+        </div>
       </div>
 
       <div class="card c2">
@@ -536,7 +545,10 @@
         <span class="sub">Your solar return · 60 min</span>
         <p>Once a year the sun returns to where it began — your birthday. I map the themes, lessons and flavors of your next trip around: a personal forecast for the year ahead.</p>
         <span class="price">€85</span>
-        <a href="#book" class="card-cta">Book this →</a>
+        <div class="card-actions">
+          <button type="button" class="card-link" onclick="openArticle('read-refill')">What's it about?</button>
+          <a href="#book" class="card-cta">Book this →</a>
+        </div>
       </div>
 
       <div class="card c3">
@@ -546,7 +558,10 @@
         <span class="sub">Synastry &amp; compatibility · 60 min</span>
         <p>Two charts, side by side. I look at how your energies blend with someone else's — the chemistry, the friction, and the notes that make it work.</p>
         <span class="price">€95</span>
-        <a href="#book" class="card-cta">Book this →</a>
+        <div class="card-actions">
+          <button type="button" class="card-link" onclick="openArticle('read-pairing')">What's it about?</button>
+          <a href="#book" class="card-cta">Book this →</a>
+        </div>
       </div>
 
     </div>
@@ -790,8 +805,8 @@
     </div>
     <div class="foot-col">
       <h4>Find us</h4>
+      <a href="https://instagram.com/mdmundi" target="_blank" rel="noopener">Instagram</a>
       <a href="https://tiktok.com/@worldlypenguin" target="_blank" rel="noopener">TikTok</a>
-      <!-- Instagram: add the brand account link here once it exists -->
     </div>
   </div>
   <div class="wrap foot-bottom">
@@ -1631,6 +1646,42 @@ else{ window.addEventListener('load', initBooking); setTimeout(()=>{ if(!calMoun
 <p>Here's the part that gives me chills every time. Because you've spent so long feeling that exact thing, you understand it in a way untouched people simply can't. The friend everyone goes to about heartbreak often has a love-wound of their own. The person who makes others feel seen usually spent years feeling invisible. Chiron is where your hurt quietly composts into your <strong>medicine</strong> — not in spite of the wound, but because of it.</p>
 <p>This is not a "everything happens for a reason" platitude. Some things just hurt. But your chart suggests the ache was never the whole story — that the soft spot and the superpower share an address.</p>
 <p>Finding your Chiron, and looking gently at what it's been trying to teach you, is some of the most moving work I get to do in a reading. If you're ready to meet that tender place with a little more kindness — and to see the gift it's been holding for you — bring it to a House Blend. We'll take it slow, and we'll take it with a warm cup. ✦</p></div>
+
+<div id="read-blend"><h1>House Blend</h1>
+<p class="dek">Your birth chart, read start to finish — the one that explains all the others.</p>
+<p>This is the foundational reading, and the one I'd point almost anyone to first. It's a full, unhurried look at your birth chart: the snapshot of the sky from the exact moment and place you were born. Ninety minutes, a drink in hand, and a real conversation about who you are and how you're wired.</p>
+<h2>Never read a chart in your life? Perfect.</h2>
+<p>You don't need to know a single symbol or term. That's literally my job — to translate. You bring your birth date, time and city; I bring your chart already drawn up and studied, and I walk you through it in plain language. No quiz, no homework, no pretending you know what a "trine" is.</p>
+<h2>What we'll actually talk about</h2>
+<p>We start with your <strong>big three</strong> — your Sun (your core self), Moon (your inner emotional world) and Rising (how you meet the world). Then we go deeper: how your mind works, how you love, what drives you, where you grow easily and where life keeps handing you the same lesson. We look at your natural gifts — the ones so built-in you've probably never counted them as gifts — and the patterns that quietly run the show.</p>
+<h2>What it's actually for, in real life</h2>
+<p>This isn't fortune-telling. It's self-understanding you can use on a Tuesday. People walk out of a House Blend with language for things they've felt their whole lives but could never quite name. It can help you stop fighting your own nature and start working <em>with</em> it — making decisions that fit how you're actually built, being kinder to yourself about your sensitive spots, and finally seeing your strengths clearly enough to lean on them. Think of it as the most honest, affirming "user manual" for being you.</p>
+<h2>Who it's for</h2>
+<p>First-timers, the deeply curious, anyone at a crossroads, or anyone who just wants to understand themselves better. If you only ever do one reading, make it this one. All I need from you is your birth date, time and place — and your questions.</p></div>
+
+<div id="read-refill"><h1>The Refill</h1>
+<p class="dek">A personal forecast for your year ahead — like a weather report for the next trip around the sun.</p>
+<p>Once a year, the Sun comes back to the exact spot it was in when you were born. That moment — right around your birthday — sets the tone for your whole next year. Your <strong>solar return</strong> reading maps what that year is shaping up to be about, so you can walk into it with eyes open instead of just bracing for whatever comes.</p>
+<h2>Is this predicting my future?</h2>
+<p>Not in the crystal-ball sense, and I'll never hand you doom. Think of it more like a forecast: I can see the <em>themes</em> and <em>weather</em> of your year — where the focus lands, where the opportunities are, what's asking to be worked on — without claiming to know every event. You still hold the umbrella and choose the road.</p>
+<h2>What we'll cover</h2>
+<p>The headline themes of your year, which areas of life get the spotlight (love, work, home, health, growth), the openings worth saying yes to, the lessons that are likely on the syllabus, and a sense of <em>timing</em> — when to push and when to rest. It's sixty focused minutes on the twelve months in front of you.</p>
+<h2>What it's actually for, in real life</h2>
+<p>People use the Refill to plan with intention instead of drifting. It's the reading that helps you pick the right year to make a big move, change careers, or finally rest — and the one that stops you feeling blindsided when a theme keeps showing up. Lots of clients make it an annual birthday ritual: a yearly check-in with themselves and the sky, a way to set the tone on purpose.</p>
+<h2>Who it's for</h2>
+<p>Anyone in their birthday season, anyone craving direction for the next chapter, and anyone who likes to start a new year with a plan. A House Blend first gives it more depth, but it's not required — your birth details are all I need.</p></div>
+
+<div id="read-pairing"><h1>Perfect Pairing</h1>
+<p class="dek">Two charts, side by side — an honest look at how you and someone else actually fit.</p>
+<p>This one takes two people's charts and lays them next to each other to read the <strong>relationship</strong> itself — the chemistry, the friction, and the quiet notes that make a connection work (or work harder than it should). It's called synastry, but you don't need to know that word to get everything out of it.</p>
+<h2>Who counts as "someone else"?</h2>
+<p>Anyone who matters. A partner, a crush, a long-term love, a best friend, a parent or sibling, even a business partner. Wherever there's a relationship you want to understand more clearly, two charts can show you what's really going on between you.</p>
+<h2>What we'll cover</h2>
+<p>Where you naturally click and the connection feels effortless, where you tend to rub each other the wrong way, how each of you communicates and what each of you needs to feel loved or respected, and the longer-term notes — the strengths to lean on and the spots that'll always take a little tending. Honest, warm, and never about declaring you "compatible" or "doomed."</p>
+<h2>What it's actually for, in real life</h2>
+<p>Instead of guessing why a relationship feels the way it does, you get to actually <em>understand</em> it. Couples use it to communicate better and stop having the same fight in different outfits. Daters use it to see a connection clearly before they're in too deep. Friends and family use it to finally make sense of a dynamic that's always run hot or cold. Knowing how two people are wired makes it so much easier to meet each other with patience instead of frustration.</p>
+<h2>Who it's for</h2>
+<p>Couples, people dating, or anyone curious about a specific connection. It works best when I have both people's birth details — date, time and place for each — so I can read the full picture between you.</p></div>
 </div>
 <script>
 function openArticle(id){var s=document.getElementById(id);if(!s)return;document.getElementById('reader-content').innerHTML=s.innerHTML;var r=document.getElementById('reader');r.classList.add('open');document.body.style.overflow='hidden';r.scrollTop=0;}
