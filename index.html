@@ -712,10 +712,10 @@
         <div class="chart-wheel" id="chartWheel"></div>
         <div class="placements" id="placements"></div>
         <div class="result-actions">
-          <button type="button" class="mini-btn" id="shareChart">✦ Share my chart</button>
-          <button type="button" class="mini-btn" id="saveChart">☆ Save as image</button>
+          <button type="button" class="mini-btn" id="shareChart" data-i18n="share.btn">✦ Share my chart</button>
+          <button type="button" class="mini-btn" id="saveChart" data-i18n="save.btn">☆ Save as image</button>
         </div>
-        <p class="result-cta">Curious what it all <em>means</em>? <a href="#book">Book a House Blend reading →</a></p>
+        <p class="result-cta" data-i18n="result.cta">Curious what it all <em>means</em>? <a href="#book">Book a House Blend reading →</a></p>
       </div>
     </div>
   </div>
@@ -933,20 +933,28 @@ const btime=document.getElementById('btime');
 notime.addEventListener('change',()=>{ btime.disabled=notime.checked; if(notime.checked) btime.value=''; });
 
 /* ---------- ASTRO ENGINE ---------- */
+/* localisation helpers — read the toggle's current language */
+function L(en,es){ return window.__lang==='es' ? es : en; }
 const SIGNS=[
-  {name:'Aries',glyph:'♈',trait:'bold, fast, first through the door'},
-  {name:'Taurus',glyph:'♉',trait:'steady, sensual, built to last'},
-  {name:'Gemini',glyph:'♊',trait:'curious, quick, two minds at once'},
-  {name:'Cancer',glyph:'♋',trait:'tender, intuitive, fiercely loyal'},
-  {name:'Leo',glyph:'♌',trait:'warm, magnetic, born to be seen'},
-  {name:'Virgo',glyph:'♍',trait:'precise, caring, quietly brilliant'},
-  {name:'Libra',glyph:'♎',trait:'charming, fair, allergic to imbalance'},
-  {name:'Scorpio',glyph:'♏',trait:'deep, intense, all or nothing'},
-  {name:'Sagittarius',glyph:'♐',trait:'free, honest, chasing the horizon'},
-  {name:'Capricorn',glyph:'♑',trait:'driven, grounded, plays the long game'},
-  {name:'Aquarius',glyph:'♒',trait:'original, independent, a few years ahead'},
-  {name:'Pisces',glyph:'♓',trait:'dreamy, empathic, tuned to the unseen'}
+  {name:'Aries',glyph:'♈',trait:'bold, fast, first through the door',es:'Aries',tes:'audaz, veloz, primero en cruzar la puerta'},
+  {name:'Taurus',glyph:'♉',trait:'steady, sensual, built to last',es:'Tauro',tes:'firme, sensual, hecho para durar'},
+  {name:'Gemini',glyph:'♊',trait:'curious, quick, two minds at once',es:'Géminis',tes:'curioso, ágil, dos mentes a la vez'},
+  {name:'Cancer',glyph:'♋',trait:'tender, intuitive, fiercely loyal',es:'Cáncer',tes:'tierno, intuitivo, ferozmente leal'},
+  {name:'Leo',glyph:'♌',trait:'warm, magnetic, born to be seen',es:'Leo',tes:'cálido, magnético, nacido para brillar'},
+  {name:'Virgo',glyph:'♍',trait:'precise, caring, quietly brilliant',es:'Virgo',tes:'preciso, atento, brillante en silencio'},
+  {name:'Libra',glyph:'♎',trait:'charming, fair, allergic to imbalance',es:'Libra',tes:'encantador, justo, alérgico al desequilibrio'},
+  {name:'Scorpio',glyph:'♏',trait:'deep, intense, all or nothing',es:'Escorpio',tes:'profundo, intenso, todo o nada'},
+  {name:'Sagittarius',glyph:'♐',trait:'free, honest, chasing the horizon',es:'Sagitario',tes:'libre, honesto, persiguiendo el horizonte'},
+  {name:'Capricorn',glyph:'♑',trait:'driven, grounded, plays the long game',es:'Capricornio',tes:'decidido, con los pies en la tierra, juega a largo plazo'},
+  {name:'Aquarius',glyph:'♒',trait:'original, independent, a few years ahead',es:'Acuario',tes:'original, independiente, unos años por delante'},
+  {name:'Pisces',glyph:'♓',trait:'dreamy, empathic, tuned to the unseen',es:'Piscis',tes:'soñador, empático, sintonizado con lo invisible'}
 ];
+const sName=s=>L(s.name,s.es), sTrait=s=>L(s.trait,s.tes);
+const PLANET_ES={Sun:'Sol',Moon:'Luna',Rising:'Ascendente',Mercury:'Mercurio',Venus:'Venus',Mars:'Marte',Jupiter:'Júpiter',Saturn:'Saturno',Uranus:'Urano',Neptune:'Neptuno',Pluto:'Plutón'};
+const pName=en=>L(en, PLANET_ES[en]||en);
+const RULE_ES={'the way you shine':'cómo brillas','the way you feel':'cómo sientes','the way you arrive':'cómo llegas','the way you think':'cómo piensas','the way you love':'cómo amas','the way you chase what you want':'cómo persigues lo que quieres','the way you grow':'cómo creces','the way you build':'cómo construyes','the way you break the mold':'cómo rompes el molde','the way you dream':'cómo sueñas','the way you transform':'cómo te transformas'};
+const ruleT=r=>L(r, RULE_ES[r]||r);
+const houseLabel=h=>L(ordinal(h)+' house','casa '+h);
 const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI, mod360=x=>((x%360)+360)%360;
 
 function julian(ms){ return ms/86400000 + 2440587.5; }
@@ -1208,7 +1216,7 @@ async function run(){
   const dateV=document.getElementById('bdate').value;
   const timeV=document.getElementById('btime').value;
   const noTime=notime.checked || !timeV;
-  if(!dateV){ setStatus('Add your birth date to continue.',true); return; }
+  if(!dateV){ setStatus(L('Add your birth date to continue.','Añade tu fecha de nacimiento para continuar.'),true); return; }
 
   const [Y,Mo,Da]=dateV.split('-').map(Number);
   let H=12,Mi=0;
@@ -1222,12 +1230,12 @@ async function run(){
       lat=parseFloat(document.getElementById('blat').value);
       lon=parseFloat(document.getElementById('blon').value);
       const offH=parseFloat(document.getElementById('boff').value);
-      if(isNaN(lat)||isNaN(lon)){ setStatus('Enter both latitude and longitude.',true); return; }
+      if(isNaN(lat)||isNaN(lon)){ setStatus(L('Enter both latitude and longitude.','Introduce la latitud y la longitud.'),true); return; }
       offMin=isNaN(offH)?0:offH*60;
     }else{
       const city=document.getElementById('bcity').value.trim();
-      if(!city){ setStatus('Add your birth city (or switch to coordinates).',true); return; }
-      setStatus('Finding your city…');
+      if(!city){ setStatus(L('Add your birth city (or switch to coordinates).','Añade tu ciudad de nacimiento (o cambia a coordenadas).'),true); return; }
+      setStatus(L('Finding your city…','Buscando tu ciudad…'));
       /* use the exact coords if a suggestion was picked; else geocode the text */
       let g;
       if(acChosen && acChosen.label===city){
@@ -1242,7 +1250,7 @@ async function run(){
       offMin = g.tz ? tzOffsetMin(new Date(guessUTC), g.tz) : Math.round(lon*4);
     }
   }catch(e){
-    setStatus("Couldn't find that city — try 'City, Country' or enter coordinates manually.",true);
+    setStatus(L("Couldn't find that city — try 'City, Country' or enter coordinates manually.",'No encontré esa ciudad — prueba \'Ciudad, País\' o introduce las coordenadas a mano.'),true);
     return;
   }
 
@@ -1275,20 +1283,42 @@ async function run(){
     const div=document.createElement('div');
     div.className='place';
     div.innerHTML='<div class="pg">'+s.glyph+'</div><div class="pt">'+
-      '<div class="role">'+pg+' '+planet+', '+rules+'</div>'+
-      '<div class="sign">'+s.name+'<span class="deg">'+deg+'°'+(house?' · '+ordinal(house)+' house':'')+'</span></div>'+
-      '<div class="trait">'+s.trait+'</div></div>';
+      '<div class="role">'+pg+' '+pName(planet)+', '+ruleT(rules)+'</div>'+
+      '<div class="sign">'+sName(s)+'<span class="deg">'+deg+'°'+(house?' · '+houseLabel(house):'')+'</span></div>'+
+      '<div class="trait">'+sTrait(s)+'</div></div>';
     box.appendChild(div);
   });
 
   /* draw the zodiac wheel */
   document.getElementById('chartWheel').innerHTML = buildWheel(placements);
-  lastChart={placements, name, label};
+  lastChart={placements, name, label, noTime, ascSignIdx};
 
-  document.getElementById('resultName').textContent = (name?name+', here':'Here')+"'s your pour"+(label?' · '+label:'');
+  document.getElementById('resultName').textContent =
+    L((name?name+', here':'Here')+"'s your pour"+(label?' · '+label:''),
+      (name?name+', aquí tienes':'Aquí tienes')+' tu taza'+(label?' · '+label:''));
   document.getElementById('result').classList.add('show');
-  setStatus(noTime?'Add a birth time for your Moon & Rising — the rest is ready.':'');
+  setStatus(noTime?L('Add a birth time for your Moon & Rising — the rest is ready.','Añade tu hora de nacimiento para la Luna y el Ascendente — lo demás está listo.'):'');
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* re-render the chart result if the user flips language after calculating */
+function rerenderChart(){
+  if(!lastChart) return;
+  const box=document.getElementById('placements'); box.innerHTML='';
+  lastChart.placements.forEach(({pg,planet,rules,lon})=>{
+    const s=signOf(lon), deg=Math.floor(mod360(lon)%30);
+    const house = lastChart.ascSignIdx==null ? null : ((Math.floor(mod360(lon)/30)-lastChart.ascSignIdx+12)%12)+1;
+    const div=document.createElement('div'); div.className='place';
+    div.innerHTML='<div class="pg">'+s.glyph+'</div><div class="pt">'+
+      '<div class="role">'+pg+' '+pName(planet)+', '+ruleT(rules)+'</div>'+
+      '<div class="sign">'+sName(s)+'<span class="deg">'+deg+'°'+(house?' · '+houseLabel(house):'')+'</span></div>'+
+      '<div class="trait">'+sTrait(s)+'</div></div>';
+    box.appendChild(div);
+  });
+  const {name,label}=lastChart;
+  document.getElementById('resultName').textContent =
+    L((name?name+', here':'Here')+"'s your pour"+(label?' · '+label:''),
+      (name?name+', aquí tienes':'Aquí tienes')+' tu taza'+(label?' · '+label:''));
 }
 
 /* ---------- BIRTH CHART WHEEL (SVG) ---------- */
@@ -1336,17 +1366,17 @@ function chartText(){
   if(!lastChart) return '';
   const lines=lastChart.placements.map(p=>{
     const s=signOf(p.lon), deg=Math.floor(mod360(p.lon)%30);
-    return p.pg+' '+p.planet+': '+s.name+' '+deg+'°';
+    return p.pg+' '+pName(p.planet)+': '+sName(s)+' '+deg+'°';
   });
-  return 'My birth chart ✦ sip & stars\n'+(lastChart.label?lastChart.label+'\n':'')+'\n'+lines.join('\n')+
-         '\n\nGet yours: https://elaastrology-arch.github.io/sip-and-stars/';
+  return L('My birth chart ✦ sip & stars','Mi carta natal ✦ sip & stars')+'\n'+(lastChart.label?lastChart.label+'\n':'')+'\n'+lines.join('\n')+
+         '\n\n'+L('Get yours','Saca la tuya')+': https://elaastrology-arch.github.io/sip-and-stars/';
 }
 const shareBtn=document.getElementById('shareChart');
 if(shareBtn) shareBtn.addEventListener('click', async ()=>{
   const text=chartText();
   try{
-    if(navigator.share){ await navigator.share({title:'My birth chart — sip & stars', text}); }
-    else{ await navigator.clipboard.writeText(text); shareBtn.textContent='✓ Copied to clipboard'; setTimeout(()=>shareBtn.textContent='✦ Share my chart',1800); }
+    if(navigator.share){ await navigator.share({title:L('My birth chart — sip & stars','Mi carta natal — sip & stars'), text}); }
+    else{ await navigator.clipboard.writeText(text); shareBtn.textContent=L('✓ Copied to clipboard','✓ Copiado'); setTimeout(()=>shareBtn.textContent=L('✦ Share my chart','✦ Compartir mi carta'),1800); }
   }catch(e){}
 });
 const saveBtn=document.getElementById('saveChart');
@@ -1371,22 +1401,23 @@ if(saveBtn) saveBtn.addEventListener('click', ()=>{
 function moonPhase(angle){
   const a=mod360(angle);
   const phases=[
-    [22.5,'New Moon','🌑'],[67.5,'Waxing Crescent','🌒'],[112.5,'First Quarter','🌓'],
-    [157.5,'Waxing Gibbous','🌔'],[202.5,'Full Moon','🌕'],[247.5,'Waning Gibbous','🌖'],
-    [292.5,'Last Quarter','🌗'],[337.5,'Waning Crescent','🌘'],[360,'New Moon','🌑']
+    [22.5,'New Moon','Luna nueva','🌑'],[67.5,'Waxing Crescent','Luna creciente','🌒'],[112.5,'First Quarter','Cuarto creciente','🌓'],
+    [157.5,'Waxing Gibbous','Gibosa creciente','🌔'],[202.5,'Full Moon','Luna llena','🌕'],[247.5,'Waning Gibbous','Gibosa menguante','🌖'],
+    [292.5,'Last Quarter','Cuarto menguante','🌗'],[337.5,'Waning Crescent','Luna menguante','🌘'],[360,'New Moon','Luna nueva','🌑']
   ];
-  for(const [lim,name,emoji] of phases){ if(a<lim) return {name,emoji}; }
-  return {name:'New Moon',emoji:'🌑'};
+  for(const [lim,name,es,emoji] of phases){ if(a<lim) return {name,es,emoji}; }
+  return {name:'New Moon',es:'Luna nueva',emoji:'🌑'};
 }
-(function renderSky(){
+function renderSky(){
   const grid=document.getElementById('skyGrid'); if(!grid) return;
   const now=new Date();
   const dS=julian(now.getTime())-2451543.5;
   const sun=sunPos(dS), moonL=moonLon(dS,sun);
   const phase=moonPhase(moonL-sun.lon);
+  const phaseName=L(phase.name,phase.es);
   const mSign=signOf(moonL), sSign=signOf(sun.lon);
   const bodies=[
-    {glyph:phase.emoji,name:'Moon',sign:mSign,sub:phase.name},
+    {glyph:phase.emoji,name:'Moon',sign:mSign,sub:phaseName},
     {glyph:'☉',name:'Sun',sign:sSign,sub:''},
     {glyph:'☿',name:'Mercury',sign:signOf(planetLon(PLANETS[0],dS,sun)),sub:''},
     {glyph:'♀',name:'Venus',sign:signOf(planetLon(PLANETS[1],dS,sun)),sub:''},
@@ -1395,56 +1426,93 @@ function moonPhase(angle){
   ];
   grid.innerHTML=bodies.map(b=>
     '<div class="sky-chip"><div class="scg">'+b.glyph+'</div>'+
-    '<div class="scp">'+b.name+'</div>'+
-    '<div class="scs">'+b.sign.glyph+' '+b.sign.name+'</div>'+
+    '<div class="scp">'+pName(b.name)+'</div>'+
+    '<div class="scs">'+b.sign.glyph+' '+sName(b.sign)+'</div>'+
     (b.sub?'<div class="scsub">'+b.sub+'</div>':'')+'</div>'
   ).join('');
-  const dateStr=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
-  document.getElementById('skyDate').textContent='Serving '+dateStr+' — poured fresh from where the planets actually are, the same sky over your cup right now.';
-  document.getElementById('skyNote').textContent=
-    'Today the Moon is steeping in '+mSign.name+' ('+phase.name.toLowerCase()+') and the Sun is sitting in '+sSign.name+'. '+
-    'A '+mSign.name+' kind of mood: '+mSign.trait+'.';
-})();
+  const dateStr=now.toLocaleDateString(L('en-GB','es-ES'),{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('skyDate').textContent=L(
+    'Serving '+dateStr+' — poured fresh from where the planets actually are, the same sky over your cup right now.',
+    'Servimos el '+dateStr+' — recién hecho desde donde están de verdad los planetas, el mismo cielo sobre tu taza ahora mismo.');
+  document.getElementById('skyNote').textContent=L(
+    'Today the Moon is steeping in '+sName(mSign)+' ('+phaseName.toLowerCase()+') and the Sun is sitting in '+sName(sSign)+'. A '+sName(mSign)+' kind of mood: '+sTrait(mSign)+'.',
+    'Hoy la Luna se infusiona en '+sName(mSign)+' ('+phaseName.toLowerCase()+') y el Sol está en '+sName(sSign)+'. Un ánimo muy '+sName(mSign)+': '+sTrait(mSign)+'.');
+}
+renderSky();
 
 /* ---------- DAILY NOTE FROM THE SKY ---------- */
-(function dailyNote(){
+const DAILY_NOTES_EN=[
+  "Today's a good day to want what you actually want.",
+  "Drink the water. Answer the text. Trust the nudge.",
+  "You don't have to earn your rest. Take it anyway.",
+  "The thing you're overthinking already knows its answer.",
+  "Soft is not the opposite of strong. Be both today.",
+  "Say the kind thing out loud before the moment passes.",
+  "Your pace is not behind. It's just yours.",
+  "Let today be enough. You've done more than you think.",
+  "The right people don't need you smaller. Take up the room.",
+  "Curiosity over judgement — about others, and about yourself.",
+  "What you keep circling back to is trying to tell you something.",
+  "Begin badly if you must, but begin.",
+  "Rest is productive. The moon doesn't apologise for being half full.",
+  "Protect your morning. The whole day leans on it.",
+  "You're allowed to change your mind and call it growth.",
+  "Tend the small thing today. It compounds.",
+  "Feelings are data, not orders. Read them, then choose.",
+  "Someone needs the warmth only you give. Spend it freely.",
+  "The pressure you feel is mostly self-issued. You can lower it.",
+  "Make the decision from who you're becoming, not who you've been.",
+  "Slow is a strategy, not a setback.",
+  "Notice what made you feel like yourself today. Do more of that.",
+  "You can be grateful and still want more. Both are true.",
+  "Pour the good cup. Sit by the window. Let it be a ritual.",
+  "Your softness survived everything. That's the strength.",
+  "Don't shrink the dream to fit today's fear.",
+  "Answer one brave email. Future you is begging.",
+  "The stars incline; they don't compel. Today is still yours to write.",
+  "Let it be easy where it can be easy.",
+  "You are not too much. You were just near the wrong people."
+];
+const DAILY_NOTES_ES=[
+  "Hoy es un buen día para querer lo que de verdad quieres.",
+  "Bebe agua. Responde el mensaje. Confía en la corazonada.",
+  "No tienes que ganarte el descanso. Tómalo igual.",
+  "Eso que tanto piensas ya conoce su respuesta.",
+  "Lo suave no es lo contrario de lo fuerte. Hoy sé las dos.",
+  "Di lo amable en voz alta antes de que pase el momento.",
+  "Tu ritmo no va atrasado. Solo es tuyo.",
+  "Deja que hoy sea suficiente. Has hecho más de lo que crees.",
+  "La gente correcta no te necesita más pequeña. Ocupa tu espacio.",
+  "Curiosidad antes que juicio — con los demás y contigo misma.",
+  "Eso a lo que siempre vuelves intenta decirte algo.",
+  "Empieza mal si hace falta, pero empieza.",
+  "Descansar es productivo. La luna no se disculpa por estar a medias.",
+  "Protege tu mañana. El día entero se apoya en ella.",
+  "Puedes cambiar de opinión y llamarlo crecer.",
+  "Cuida hoy lo pequeño. Se acumula.",
+  "Las emociones son datos, no órdenes. Léelas y luego elige.",
+  "Alguien necesita el calor que solo tú das. Dalo sin medida.",
+  "La presión que sientes te la pones casi toda tú. Puedes bajarla.",
+  "Decide desde quien estás siendo, no desde quien fuiste.",
+  "Ir despacio es una estrategia, no un retroceso.",
+  "Nota qué te hizo sentir tú misma hoy. Haz más de eso.",
+  "Puedes agradecer y querer más a la vez. Ambas son verdad.",
+  "Sirve la buena taza. Siéntate junto a la ventana. Que sea un ritual.",
+  "Tu ternura sobrevivió a todo. Esa es la fuerza.",
+  "No encojas el sueño para que quepa en el miedo de hoy.",
+  "Responde un correo valiente. Tu yo del futuro te lo ruega.",
+  "Los astros inclinan; no obligan. El día sigue siendo tuyo para escribirlo.",
+  "Deja que sea fácil donde pueda ser fácil.",
+  "No eres demasiado. Solo estabas cerca de la gente equivocada."
+];
+function dailyNote(){
   const el=document.getElementById('dailyNote'); if(!el) return;
-  const notes=[
-    "Today's a good day to want what you actually want.",
-    "Drink the water. Answer the text. Trust the nudge.",
-    "You don't have to earn your rest. Take it anyway.",
-    "The thing you're overthinking already knows its answer.",
-    "Soft is not the opposite of strong. Be both today.",
-    "Say the kind thing out loud before the moment passes.",
-    "Your pace is not behind. It's just yours.",
-    "Let today be enough. You've done more than you think.",
-    "The right people don't need you smaller. Take up the room.",
-    "Curiosity over judgement — about others, and about yourself.",
-    "What you keep circling back to is trying to tell you something.",
-    "Begin badly if you must, but begin.",
-    "Rest is productive. The moon doesn't apologise for being half full.",
-    "Protect your morning. The whole day leans on it.",
-    "You're allowed to change your mind and call it growth.",
-    "Tend the small thing today. It compounds.",
-    "Feelings are data, not orders. Read them, then choose.",
-    "Someone needs the warmth only you give. Spend it freely.",
-    "The pressure you feel is mostly self-issued. You can lower it.",
-    "Make the decision from who you're becoming, not who you've been.",
-    "Slow is a strategy, not a setback.",
-    "Notice what made you feel like yourself today. Do more of that.",
-    "You can be grateful and still want more. Both are true.",
-    "Pour the good cup. Sit by the window. Let it be a ritual.",
-    "Your softness survived everything. That's the strength.",
-    "Don't shrink the dream to fit today's fear.",
-    "Answer one brave email. Future you is begging.",
-    "The stars incline; they don't compel. Today is still yours to write.",
-    "Let it be easy where it can be easy.",
-    "You are not too much. You were just near the wrong people."
-  ];
   const start=Date.UTC(new Date().getUTCFullYear(),0,0);
   const doy=Math.floor((Date.now()-start)/86400000);
+  const notes=L(DAILY_NOTES_EN,DAILY_NOTES_ES);
   el.textContent='✦ '+notes[doy%notes.length];
-})();
+}
+dailyNote();
 
 /* ---------- COMPATIBILITY TASTER ---------- */
 function quickSigns(dateStr){
@@ -1457,10 +1525,48 @@ const ELEMENT={Aries:'fire',Leo:'fire',Sagittarius:'fire',Taurus:'earth',Virgo:'
   Gemini:'air',Libra:'air',Aquarius:'air',Cancer:'water',Scorpio:'water',Pisces:'water'};
 function pairVerdict(a,b){
   const e1=ELEMENT[a.name], e2=ELEMENT[b.name];
-  if(e1===e2) return {pts:2,word:'easy harmony',glyph:'♥'};
+  if(e1===e2) return {pts:2,word:'easy harmony',wes:'armonía fácil',glyph:'♥'};
   if((e1==='fire'&&e2==='air')||(e1==='air'&&e2==='fire')||(e1==='earth'&&e2==='water')||(e1==='water'&&e2==='earth'))
-    return {pts:2,word:'electric',glyph:'✦'};
-  return {pts:1,word:'a learning curve',glyph:'↻'};
+    return {pts:2,word:'electric',wes:'eléctrico',glyph:'✦'};
+  return {pts:1,word:'a learning curve',wes:'un aprendizaje',glyph:'↻'};
+}
+let lastMatch=null;
+function renderMatch(d1,d2){
+  const c1=quickSigns(d1), c2=quickSigns(d2);
+  const rows=[[L('Core self','Esencia'),c1.sun,c2.sun],[L('How you love','Cómo amas'),c1.venus,c2.venus],[L('Your spark','Tu chispa'),c1.mars,c2.mars]];
+  let total=0;
+  const rowsHTML=rows.map(([cat,s1,s2])=>{
+    const v=pairVerdict(s1,s2); total+=v.pts;
+    return '<div class="mrow">'+
+      '<div class="mside"><div class="msg">'+s1.glyph+'</div><div class="msn">'+sName(s1)+'</div></div>'+
+      '<div class="mmid"><div class="mcat">'+cat+'</div><div class="mmg">'+v.glyph+'</div><div class="mmw">'+L(v.word,v.wes)+'</div></div>'+
+      '<div class="mside"><div class="msg">'+s2.glyph+'</div><div class="msn">'+sName(s2)+'</div></div>'+
+    '</div>';
+  }).join('');
+  const verdicts=L({
+      6:'Cosmic best friends. The chemistry here is loud — and easy.',
+      5:'Real spark. This one flows more than it fights.',
+      4:'Lovely potential, with just enough spice to stay interesting.',
+      3:'Different wiring — which can read as magnetic or maddening, depending on the day.',
+      2:'Opposites that attract and challenge. Plenty to learn from each other here.'
+    },{
+      6:'Mejores amigos cósmicos. La química aquí es fuerte — y fácil.',
+      5:'Chispa de verdad. Esto fluye más de lo que choca.',
+      4:'Lindo potencial, con la pizca justa para mantenerlo interesante.',
+      3:'Cableado distinto — que puede sentirse magnético o exasperante, según el día.',
+      2:'Opuestos que se atraen y se retan. Mucho que aprender el uno del otro.'
+    });
+  const result=document.getElementById('matchResult');
+  result.innerHTML=
+    '<div class="match-names">'+L('You ✦ Them','Tú ✦ La otra persona')+'</div>'+
+    '<div class="match-rows">'+rowsHTML+'</div>'+
+    '<div class="match-verdict">'+
+      '<div class="mv-score">'+total+L(' / 6 sparks',' / 6 chispas')+'</div>'+
+      '<p>'+(verdicts[total]||verdicts[3])+'</p>'+
+      '<p style="font-size:.86rem;opacity:.85">'+L('Just a sip — three placements out of dozens. The real chemistry lives in the whole cup.','Solo un sorbo — tres posiciones de muchas. La química real vive en la taza entera.')+'</p>'+
+      '<a href="#book" class="btn">'+L('Pour the full reading — book a Perfect Pairing →','Sirve la lectura completa — reserva un Perfect Pairing →')+'</a>'+
+    '</div>';
+  result.classList.add('show');
 }
 (function matchInit(){
   const btn=document.getElementById('matchBtn'); if(!btn) return;
@@ -1468,40 +1574,21 @@ function pairVerdict(a,b){
   function setMS(m,err){ statusEl.textContent=m||''; statusEl.classList.toggle('err',!!err); }
   btn.addEventListener('click',function(){
     const d1=document.getElementById('m1').value, d2=document.getElementById('m2').value;
-    if(!d1||!d2){ setMS('Add both birth dates to see your chemistry.',true); return; }
+    if(!d1||!d2){ setMS(L('Add both birth dates to see your chemistry.','Añade las dos fechas de nacimiento para ver la química.'),true); return; }
     setMS('');
-    const c1=quickSigns(d1), c2=quickSigns(d2);
-    const rows=[['Core self','☉',c1.sun,c2.sun],['How you love','♀',c1.venus,c2.venus],['Your spark','♂',c1.mars,c2.mars]];
-    let total=0;
-    const rowsHTML=rows.map(([cat,g,s1,s2])=>{
-      const v=pairVerdict(s1,s2); total+=v.pts;
-      return '<div class="mrow">'+
-        '<div class="mside"><div class="msg">'+s1.glyph+'</div><div class="msn">'+s1.name+'</div></div>'+
-        '<div class="mmid"><div class="mcat">'+cat+'</div><div class="mmg">'+v.glyph+'</div><div class="mmw">'+v.word+'</div></div>'+
-        '<div class="mside"><div class="msg">'+s2.glyph+'</div><div class="msn">'+s2.name+'</div></div>'+
-      '</div>';
-    }).join('');
-    const verdicts={
-      6:'Cosmic best friends. The chemistry here is loud — and easy.',
-      5:'Real spark. This one flows more than it fights.',
-      4:'Lovely potential, with just enough spice to stay interesting.',
-      3:'Different wiring — which can read as magnetic or maddening, depending on the day.',
-      2:'Opposites that attract and challenge. Plenty to learn from each other here.'
-    };
-    const result=document.getElementById('matchResult');
-    result.innerHTML=
-      '<div class="match-names">You ✦ Them</div>'+
-      '<div class="match-rows">'+rowsHTML+'</div>'+
-      '<div class="match-verdict">'+
-        '<div class="mv-score">'+total+' / 6 sparks</div>'+
-        '<p>'+(verdicts[total]||verdicts[3])+'</p>'+
-        '<p style="font-size:.86rem;opacity:.85">Just a sip — three placements out of dozens. The real chemistry lives in the whole cup.</p>'+
-        '<a href="#book" class="btn">Pour the full reading — book a Perfect Pairing →</a>'+
-      '</div>';
-    result.classList.add('show');
-    result.scrollIntoView({behavior:'smooth',block:'nearest'});
+    lastMatch={d1,d2};
+    renderMatch(d1,d2);
+    document.getElementById('matchResult').scrollIntoView({behavior:'smooth',block:'nearest'});
   });
 })();
+
+/* re-render all live/computed content when the language toggle changes */
+document.addEventListener('langchange', function(){
+  renderSky();
+  dailyNote();
+  if(typeof lastChart!=='undefined' && lastChart) rerenderChart();
+  if(typeof lastMatch!=='undefined' && lastMatch) renderMatch(lastMatch.d1,lastMatch.d2);
+});
 
 /* ---------- BOOKING (Calendly) ---------- */
 /* Calendly event URLs. Swap in a separate online-event link when ready. */
@@ -1526,13 +1613,13 @@ function loadBooking(loc){
     });
   }else{
     calMount.classList.remove('has-widget');
-    const where = loc==='tallinn' ? 'Tallinn (in person)' : 'online';
+    const where = loc==='tallinn' ? L('Tallinn (in person)','Tallin (en persona)') : 'online';
     calMount.innerHTML=
       '<div class="cal-placeholder">'+
         '<div class="pglyph">'+(loc==='tallinn'?'☕':'✦')+'</div>'+
-        '<h3>The calendar didn’t load</h3>'+
-        '<p>Looks like the booking calendar couldn’t load just now — it may be your connection or an ad-blocker. Email me and we’ll find a time for your '+where+' reading.</p>'+
-        '<a class="btn" href="mailto:elaastrology@gmail.com?subject=Booking%20a%20'+loc+'%20reading">Email me to book →</a>'+
+        '<h3>'+L('The calendar didn’t load','El calendario no cargó')+'</h3>'+
+        '<p>'+L('Looks like the booking calendar couldn’t load just now — it may be your connection or an ad-blocker. Email me and we’ll find a time for your '+where+' reading.','Parece que el calendario de reservas no cargó ahora mismo — puede ser tu conexión o un bloqueador de anuncios. Escríbeme y encontramos una hora para tu lectura '+where+'.')+'</p>'+
+        '<a class="btn" href="mailto:elaastrology@gmail.com?subject=Booking%20a%20'+loc+'%20reading">'+L('Email me to book →','Escríbeme para reservar →')+'</a>'+
       '</div>';
   }
 }
@@ -1552,7 +1639,7 @@ else{ window.addEventListener('load', initBooking); setTimeout(()=>{ if(!calMoun
 </script>
 <!-- READER -->
 <div class="reader" id="reader" role="dialog" aria-modal="true" aria-label="Article">
-  <div class="reader-inner"><button class="reader-close" onclick="closeArticle()" aria-label="Close article">&#10005;</button><div class="reader-content" id="reader-content"></div><div class="reader-foot"><p class="meta">Written by MD &middot; sip &amp; stars</p><a href="#book" class="btn btn-primary" onclick="closeArticle()">Book a reading &rarr;</a></div></div>
+  <div class="reader-inner"><button class="reader-close" onclick="closeArticle()" aria-label="Close article">&#10005;</button><div class="reader-content" id="reader-content"></div><div class="reader-foot"><p class="meta" data-i18n="reader.meta">Written by MD &middot; sip &amp; stars</p><a href="#book" class="btn btn-primary" onclick="closeArticle()" data-i18n="reader.book">Book a reading &rarr;</a></div></div>
 </div>
 <div id="articles-src" hidden>
 <div id="art-1"><h1>What's a Birth Chart, Really?</h1>
@@ -1971,7 +2058,7 @@ document.querySelectorAll('.faq-q').forEach(function(btn){
 <script>
 /* Spanish strings, keyed to data-i18n attributes. Anything without an entry
    gracefully stays in English, so the toggle never looks broken. */
-const I18N_ES = {"calc.btn":"Leer mi carta ✦","calc.adv":"Introducir coordenadas a mano","nav.readings": "Lecturas","nav.freechart": "Carta gratis","nav.journal": "Diario","nav.about": "Sobre mí","nav.book": "Reservar","calc.notime": "No sé mi hora exacta","hero.eyebrow": "astrología, servida sin prisa","hero.sub": "Ponte cómoda. Leo el cielo bajo el que naciste — con un café, un té o la bebida que prefieras. En persona en Tallin, u online desde donde estés.","hero.cta1": "Reservar una lectura →","hero.cta2": "Calcula tu carta","readings.label": "La carta","readings.h2": "Tres formas<br>de leer el cielo","readings.p": "Cada lectura es una conversación de verdad — tu carta sobre la mesa, una bebida en la mano y nada de jerga. Solo lo que el cielo significa de verdad para ti.","card1.sub": "Tu carta natal · 90 min","card1.p": "Tu plano cósmico, puro. Leo la carta bajo la que naciste — las energías con las que llegaste y los dones que traes contigo desde el primer momento.","card2.sub": "Tu revolución solar · 60 min","card2.p": "Una vez al año el sol vuelve a donde empezó: tu cumpleaños. Mapeo los temas, lecciones y matices de tu próxima vuelta — un pronóstico personal para el año que viene.","card3.sub": "Sinastría y compatibilidad · 60 min","card3.p": "Dos cartas, lado a lado. Miro cómo tus energías se mezclan con las de otra persona — la química, la fricción y las notas que hacen que funcione.","how.label": "Cómo funciona","how.h2": "Tres pasos<br>hacia tus estrellas","how.p": "Sin tarea cósmica ni jerga que aprender. Tú traes tus datos de nacimiento y tus preguntas — yo traigo la carta y la conversación.","how.s1h": "Reserva tu lugar","how.s1p": "Elige en persona en Tallin u online desde donde estés, escoge una hora que te venga bien y dime qué lectura quieres.","how.s2h": "Comparte tus datos","how.s2p": "Envíame tu fecha, hora y ciudad de nacimiento. Preparo tu carta y la estudio a fondo antes de sentarnos.","how.s3h": "Un sorbo y a leer","how.s3p": "Nos vemos con una bebida y te acompaño por tu cielo — lo que significa para ti, en palabras claras y con espacio para todas tus preguntas.","sky.label": "Hoy en la pizarra","sky.h2": "La taza<br>de hoy","match.label": "Química cósmica","match.h2": "Dos tazas,<br>una mesa","match.p": "Un pequeño adelanto de cómo se mezclan dos cartas — tu esencia, tu amor, tu chispa, lado a lado. Solo un sorbo; el servicio completo es una lectura Perfect Pairing con una bebida.","match.m1": "Tú — fecha de nacimiento","match.m2": "La otra persona — fecha","match.btn": "Prueba la mezcla →","calc.label": "Cortesía de la casa","calc.h2": "Calcula tu<br>carta natal","calc.p": "Dime cuándo y dónde naciste y te servimos lo básico — tu Sol, tu Luna y tu Ascendente. Es el primer sorbo; la historia completa llega en una lectura.","calc.note": "¿sin hora? sin problema — igual sacamos tu Sol ☉","calc.name": "Tu nombre (opcional)","calc.date": "Fecha de nacimiento","calc.time": "Hora de nacimiento","calc.city": "Ciudad de nacimiento","about.label": "Quién sirve","about.h2": "Hola, soy MD.","about.p1": "Soy de Venezuela y me enamoré de la astrología a los doce años. Durante casi dos décadas ha sido la lente con la que veo el mundo — y a mí misma.","about.p2": "Se puso seria en 2020. Cuando el mundo se detuvo y todos tuvimos que mirar hacia adentro y enfrentar lo que habíamos guardado, sentí una necesidad profunda de entenderme: ¿quién soy y cuál es mi propósito aquí? La astrología fue la herramienta que de verdad lo respondió.","about.p3": "Desde entonces he ayudado a muchísimas personas a conocerse mejor, a encontrar un sentido real de control sobre su camino y a entender los dones con los que nacieron y las energías a su disposición.","about.p4": "Cada lectura sucede como debe ser — con un café, un té o la bebida que prefieras. En persona en Tallin, u online desde donde estés.","about.sig": "— nos vemos bajo las estrellas, MD ✦","faq.label": "Bueno saber","faq.h2": "Preguntas,<br>respondidas","faq.p": "Todo lo que quizá te preguntas antes de reservar. ¿Sigues con dudas? Solo escríbeme.","faq.q1": "¿Necesito saber mi hora exacta de nacimiento?","faq.q2": "¿Dónde son las lecturas en persona?","faq.q3": "¿En qué idiomas haces las lecturas?","faq.q4": "Soy totalmente nueva en la astrología. ¿Está bien?","faq.q5": "¿Cómo me preparo?","faq.q6": "¿Qué lectura debería elegir?","faq.a1": "Para tu carta completa — incluyendo tu Luna y tu Ascendente — sí, incluso una hora aproximada ayuda mucho. Sin ella igual puedo leer tu Sol y los planetas más lentos. Revisa tu acta de nacimiento, o dame un rango aproximado y trabajamos con eso.","faq.a2": "En Tallin, con un café, un té o la bebida que prefieras — te comparto el lugar al reservar. ¿No estás en Tallin? Leo para personas de todo el mundo por video, y es igual de cercano.","faq.a3": "Inglés y español — el que sientas más tuyo. Solo dímelo al reservar.","faq.a4": "Más que bien — es mi tipo de lectura favorita. Todo es en palabras claras, sin símbolos que memorizar antes. Tú te traes a ti misma y tus preguntas; yo traigo el mapa.","faq.a5": "Trae tres cosas: tu fecha, tu hora y tu ciudad de nacimiento — además de las preguntas que tengas en mente. Eso es todo lo que necesito para leer tu cielo.","faq.a6": "¿Nueva en tu carta? Empieza con el <b>House Blend</b> — tu carta natal completa. ¿Te interesa el año que viene? El <b>Refill</b> lee tu revolución solar. ¿Te preguntas por una relación? <b>Perfect Pairing</b> mira dos cartas juntas.","book.label": "Reserva tu lugar","book.h2": "leamos tu cielo <span class=\"amp\">&amp;</span> sirvamos una bebida","book.p": "Elige dónde prefieres que nos veamos, escoge una hora y dime qué lectura quieres. Yo traigo la carta — tú traes las preguntas.","book.loc1": "☕ En persona · Tallin","book.loc2": "✦ Online · donde sea","journal.label": "El diario","journal.h2": "Notas desde<br>bajo el cielo","journal.p": "Astrología en palabras claras — lo que tu carta, los planetas y la luna significan de verdad en la vida real. Notas nuevas a menudo.","foot.tag": "Astrología por MD. Lecturas de carta con un café o un té — en Tallin u online.","card.cta": "Reservar →","foot.readings": "Lecturas","foot.more": "Más","foot.find": "Encuéntranos","card.about": "¿De qué se trata?","jtag.the_basics": "Lo básico","jtag.start_here": "Empieza aquí","jtag.know_yourself": "Conócete","jtag.big_moments": "Grandes momentos","jtag.no_panic": "Sin pánico","jtag.rhythms": "Ritmos","jtag.your_purpose": "Tu propósito","jtag.love": "Amor","jtag.compatibility": "Compatibilidad","jtag.your_year": "Tu año","jtag.where_to_live": "Dónde vivir","jtag.soft_life": "Vida suave","jtag.deep_cuts": "A fondo","ph.name": "ej. María","ph.city": "ej. Ciudad de México, México"};
+const I18N_ES = {"calc.btn": "Leer mi carta ✦", "calc.adv": "Introducir coordenadas a mano", "nav.readings": "Lecturas", "nav.freechart": "Carta gratis", "nav.journal": "Diario", "nav.about": "Sobre mí", "nav.book": "Reservar", "calc.notime": "No sé mi hora exacta", "hero.eyebrow": "astrología, servida sin prisa", "hero.sub": "Ponte cómoda. Leo el cielo bajo el que naciste — con un café, un té o la bebida que prefieras. En persona en Tallin, u online desde donde estés.", "hero.cta1": "Reservar una lectura →", "hero.cta2": "Calcula tu carta", "readings.label": "La carta", "readings.h2": "Tres formas<br>de leer el cielo", "readings.p": "Cada lectura es una conversación de verdad — tu carta sobre la mesa, una bebida en la mano y nada de jerga. Solo lo que el cielo significa de verdad para ti.", "card1.sub": "Tu carta natal · 90 min", "card1.p": "Tu plano cósmico, puro. Leo la carta bajo la que naciste — las energías con las que llegaste y los dones que traes contigo desde el primer momento.", "card2.sub": "Tu revolución solar · 60 min", "card2.p": "Una vez al año el sol vuelve a donde empezó: tu cumpleaños. Mapeo los temas, lecciones y matices de tu próxima vuelta — un pronóstico personal para el año que viene.", "card3.sub": "Sinastría y compatibilidad · 60 min", "card3.p": "Dos cartas, lado a lado. Miro cómo tus energías se mezclan con las de otra persona — la química, la fricción y las notas que hacen que funcione.", "how.label": "Cómo funciona", "how.h2": "Tres pasos<br>hacia tus estrellas", "how.p": "Sin tarea cósmica ni jerga que aprender. Tú traes tus datos de nacimiento y tus preguntas — yo traigo la carta y la conversación.", "how.s1h": "Reserva tu lugar", "how.s1p": "Elige en persona en Tallin u online desde donde estés, escoge una hora que te venga bien y dime qué lectura quieres.", "how.s2h": "Comparte tus datos", "how.s2p": "Envíame tu fecha, hora y ciudad de nacimiento. Preparo tu carta y la estudio a fondo antes de sentarnos.", "how.s3h": "Un sorbo y a leer", "how.s3p": "Nos vemos con una bebida y te acompaño por tu cielo — lo que significa para ti, en palabras claras y con espacio para todas tus preguntas.", "sky.label": "Hoy en la pizarra", "sky.h2": "La taza<br>de hoy", "match.label": "Química cósmica", "match.h2": "Dos tazas,<br>una mesa", "match.p": "Un pequeño adelanto de cómo se mezclan dos cartas — tu esencia, tu amor, tu chispa, lado a lado. Solo un sorbo; el servicio completo es una lectura Perfect Pairing con una bebida.", "match.m1": "Tú — fecha de nacimiento", "match.m2": "La otra persona — fecha", "match.btn": "Prueba la mezcla →", "calc.label": "Cortesía de la casa", "calc.h2": "Calcula tu<br>carta natal", "calc.p": "Dime cuándo y dónde naciste y te servimos lo básico — tu Sol, tu Luna y tu Ascendente. Es el primer sorbo; la historia completa llega en una lectura.", "calc.note": "¿sin hora? sin problema — igual sacamos tu Sol ☉", "calc.name": "Tu nombre (opcional)", "calc.date": "Fecha de nacimiento", "calc.time": "Hora de nacimiento", "calc.city": "Ciudad de nacimiento", "about.label": "Quién sirve", "about.h2": "Hola, soy MD.", "about.p1": "Soy de Venezuela y me enamoré de la astrología a los doce años. Durante casi dos décadas ha sido la lente con la que veo el mundo — y a mí misma.", "about.p2": "Se puso seria en 2020. Cuando el mundo se detuvo y todos tuvimos que mirar hacia adentro y enfrentar lo que habíamos guardado, sentí una necesidad profunda de entenderme: ¿quién soy y cuál es mi propósito aquí? La astrología fue la herramienta que de verdad lo respondió.", "about.p3": "Desde entonces he ayudado a muchísimas personas a conocerse mejor, a encontrar un sentido real de control sobre su camino y a entender los dones con los que nacieron y las energías a su disposición.", "about.p4": "Cada lectura sucede como debe ser — con un café, un té o la bebida que prefieras. En persona en Tallin, u online desde donde estés.", "about.sig": "— nos vemos bajo las estrellas, MD ✦", "faq.label": "Bueno saber", "faq.h2": "Preguntas,<br>respondidas", "faq.p": "Todo lo que quizá te preguntas antes de reservar. ¿Sigues con dudas? Solo escríbeme.", "faq.q1": "¿Necesito saber mi hora exacta de nacimiento?", "faq.q2": "¿Dónde son las lecturas en persona?", "faq.q3": "¿En qué idiomas haces las lecturas?", "faq.q4": "Soy totalmente nueva en la astrología. ¿Está bien?", "faq.q5": "¿Cómo me preparo?", "faq.q6": "¿Qué lectura debería elegir?", "faq.a1": "Para tu carta completa — incluyendo tu Luna y tu Ascendente — sí, incluso una hora aproximada ayuda mucho. Sin ella igual puedo leer tu Sol y los planetas más lentos. Revisa tu acta de nacimiento, o dame un rango aproximado y trabajamos con eso.", "faq.a2": "En Tallin, con un café, un té o la bebida que prefieras — te comparto el lugar al reservar. ¿No estás en Tallin? Leo para personas de todo el mundo por video, y es igual de cercano.", "faq.a3": "Inglés y español — el que sientas más tuyo. Solo dímelo al reservar.", "faq.a4": "Más que bien — es mi tipo de lectura favorita. Todo es en palabras claras, sin símbolos que memorizar antes. Tú te traes a ti misma y tus preguntas; yo traigo el mapa.", "faq.a5": "Trae tres cosas: tu fecha, tu hora y tu ciudad de nacimiento — además de las preguntas que tengas en mente. Eso es todo lo que necesito para leer tu cielo.", "faq.a6": "¿Nueva en tu carta? Empieza con el <b>House Blend</b> — tu carta natal completa. ¿Te interesa el año que viene? El <b>Refill</b> lee tu revolución solar. ¿Te preguntas por una relación? <b>Perfect Pairing</b> mira dos cartas juntas.", "book.label": "Reserva tu lugar", "book.h2": "leamos tu cielo <span class=\"amp\">&amp;</span> sirvamos una bebida", "book.p": "Elige dónde prefieres que nos veamos, escoge una hora y dime qué lectura quieres. Yo traigo la carta — tú traes las preguntas.", "book.loc1": "☕ En persona · Tallin", "book.loc2": "✦ Online · donde sea", "journal.label": "El diario", "journal.h2": "Notas desde<br>bajo el cielo", "journal.p": "Astrología en palabras claras — lo que tu carta, los planetas y la luna significan de verdad en la vida real. Notas nuevas a menudo.", "foot.tag": "Astrología por MD. Lecturas de carta con un café o un té — en Tallin u online.", "card.cta": "Reservar →", "foot.readings": "Lecturas", "foot.more": "Más", "foot.find": "Encuéntranos", "card.about": "¿De qué se trata?", "jtag.the_basics": "Lo básico", "jtag.start_here": "Empieza aquí", "jtag.know_yourself": "Conócete", "jtag.big_moments": "Grandes momentos", "jtag.no_panic": "Sin pánico", "jtag.rhythms": "Ritmos", "jtag.your_purpose": "Tu propósito", "jtag.love": "Amor", "jtag.compatibility": "Compatibilidad", "jtag.your_year": "Tu año", "jtag.where_to_live": "Dónde vivir", "jtag.soft_life": "Vida suave", "jtag.deep_cuts": "A fondo", "ph.name": "ej. María", "ph.city": "ej. Ciudad de México, México", "share.btn": "✦ Compartir mi carta", "save.btn": "☆ Guardar como imagen", "result.cta": "¿Con curiosidad por lo que <em>significa</em> todo? <a href=\"#book\">Reserva una lectura House Blend →</a>", "reader.meta": "Escrito por MD &middot; sip &amp; stars", "reader.book": "Reservar una lectura &rarr;"};
 (function(){
   const nodes=[...document.querySelectorAll('[data-i18n]')];
   const phNodes=[...document.querySelectorAll('[data-i18n-ph]')];
