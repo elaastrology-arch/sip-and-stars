@@ -107,6 +107,7 @@
     padding:3px 8px;border-radius:999px;transform:rotate(-4deg);
     border:1.5px solid var(--ink);
   }
+  .nav-right{display:flex;align-items:center;gap:20px}
   .nav-links{display:flex;gap:26px;align-items:center}
   .nav-links a{font-weight:600;font-size:.92rem;color:var(--ink-soft);transition:color .15s}
   .nav-links a:hover{color:var(--green)}
@@ -115,6 +116,11 @@
     padding:9px 18px;border-radius:999px;font-weight:700;font-size:.9rem;
   }
   .nav-book:hover{background:var(--hot);color:var(--cream-2)!important}
+  .lang-toggle{display:flex;align-items:center;gap:5px;border:1.5px solid rgba(28,107,65,.45);border-radius:999px;padding:4px 11px}
+  .lang-toggle svg{width:15px;height:15px;color:var(--green);flex:none}
+  .lang-toggle button{background:none;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.78rem;letter-spacing:.02em;color:var(--ink-soft);padding:1px 2px}
+  .lang-toggle button.active{color:var(--green)}
+  .lang-toggle .lang-sep{color:rgba(28,107,65,.4);font-size:.78rem}
   .nav-toggle{display:none;background:none;border:none;cursor:pointer}
   @media(max-width:780px){
     .nav-links{
@@ -497,15 +503,23 @@
     <span class="mark">sip <span class="amp">&amp;</span> stars</span>
     <span class="pill-md">by MD</span>
   </div>
-  <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
-  </button>
-  <div class="nav-links" id="navlinks">
-    <a href="#readings">Readings</a>
-    <a href="#calculator">Free chart</a>
-    <a href="#journal">Journal</a>
-    <a href="#about">About</a>
-    <a href="#book" class="nav-book">Book a sip</a>
+  <div class="nav-right">
+    <div class="nav-links" id="navlinks">
+      <a href="#readings" data-i18n="nav.readings">Readings</a>
+      <a href="#calculator" data-i18n="nav.freechart">Free chart</a>
+      <a href="#journal" data-i18n="nav.journal">Journal</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#book" class="nav-book" data-i18n="nav.book">Book a sip</a>
+    </div>
+    <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>
+      <button type="button" data-lang-btn="en">EN</button>
+      <span class="lang-sep" aria-hidden="true">·</span>
+      <button type="button" data-lang-btn="es">ES</button>
+    </div>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -518,13 +532,13 @@
     <span>sip &amp; stars</span>
   </div>
   <div class="wrap hero-inner">
-    <div class="eyebrow">astrology, served slow</div>
+    <div class="eyebrow" data-i18n="hero.eyebrow">astrology, served slow</div>
     <h1 class="display">sip <span class="amp">&amp;</span> <span class="stars">stars</span></h1>
-    <p class="hero-sub">Pull up a chair. I read the sky you were born under — over a coffee, tea, or drink of your choice. In person in Tallinn, or online from anywhere.</p>
+    <p class="hero-sub" data-i18n="hero.sub">Pull up a chair. I read the sky you were born under — over a coffee, tea, or drink of your choice. In person in Tallinn, or online from anywhere.</p>
     <p class="hero-note" id="dailyNote" aria-live="polite"></p>
     <div class="hero-cta">
-      <a href="#book" class="btn btn-primary">Book a reading →</a>
-      <a href="#calculator" class="btn btn-ghost">Calculate your chart</a>
+      <a href="#book" class="btn btn-primary" data-i18n="hero.cta1">Book a reading →</a>
+      <a href="#calculator" class="btn btn-ghost" data-i18n="hero.cta2">Calculate your chart</a>
     </div>
     <!-- pour-of-stars signature motif -->
     <svg class="pour-art" viewBox="0 0 200 150" fill="none" stroke="#1C6B41" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -560,10 +574,10 @@
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="label">The menu</div>
-        <h2 class="display">Three ways<br>to read the sky</h2>
+        <div class="label" data-i18n="readings.label">The menu</div>
+        <h2 class="display" data-i18n="readings.h2">Three ways<br>to read the sky</h2>
       </div>
-      <p>Every reading is a real conversation — your chart on the table, a drink in hand, no jargon. Just what the sky actually means for you.</p>
+      <p data-i18n="readings.p">Every reading is a real conversation — your chart on the table, a drink in hand, no jargon. Just what the sky actually means for you.</p>
     </div>
     <div class="readings-grid">
 
@@ -571,12 +585,12 @@
         <span class="num">01</span>
         <span class="glyph">☉</span>
         <h3>House Blend</h3>
-        <span class="sub">Your birth chart · 90 min</span>
-        <p>Your cosmic blueprint, neat. I read the chart you were born under — the energies you arrived with and the natural gifts wired into you from the very start.</p>
+        <span class="sub" data-i18n="card1.sub">Your birth chart · 90 min</span>
+        <p data-i18n="card1.p">Your cosmic blueprint, neat. I read the chart you were born under — the energies you arrived with and the natural gifts wired into you from the very start.</p>
         <span class="price">€120</span>
         <div class="card-actions">
-          <button type="button" class="card-link" onclick="openArticle('read-blend')">What's it about?</button>
-          <a href="#book" class="card-cta">Book this →</a>
+          <button type="button" class="card-link" onclick="openArticle('read-blend')" data-i18n="card.about">What's it about?</button>
+          <a href="#book" class="card-cta" data-i18n="card.cta">Book this →</a>
         </div>
       </div>
 
@@ -584,12 +598,12 @@
         <span class="num">02</span>
         <span class="glyph">↻</span>
         <h3>The Refill</h3>
-        <span class="sub">Your solar return · 60 min</span>
-        <p>Once a year the sun returns to where it began — your birthday. I map the themes, lessons and flavors of your next trip around: a personal forecast for the year ahead.</p>
+        <span class="sub" data-i18n="card2.sub">Your solar return · 60 min</span>
+        <p data-i18n="card2.p">Once a year the sun returns to where it began — your birthday. I map the themes, lessons and flavors of your next trip around: a personal forecast for the year ahead.</p>
         <span class="price">€85</span>
         <div class="card-actions">
-          <button type="button" class="card-link" onclick="openArticle('read-refill')">What's it about?</button>
-          <a href="#book" class="card-cta">Book this →</a>
+          <button type="button" class="card-link" onclick="openArticle('read-refill')" data-i18n="card.about">What's it about?</button>
+          <a href="#book" class="card-cta" data-i18n="card.cta">Book this →</a>
         </div>
       </div>
 
@@ -597,12 +611,12 @@
         <span class="num">03</span>
         <span class="glyph">♥</span>
         <h3>Perfect Pairing</h3>
-        <span class="sub">Synastry &amp; compatibility · 60 min</span>
-        <p>Two charts, side by side. I look at how your energies blend with someone else's — the chemistry, the friction, and the notes that make it work.</p>
+        <span class="sub" data-i18n="card3.sub">Synastry &amp; compatibility · 60 min</span>
+        <p data-i18n="card3.p">Two charts, side by side. I look at how your energies blend with someone else's — the chemistry, the friction, and the notes that make it work.</p>
         <span class="price">€95</span>
         <div class="card-actions">
-          <button type="button" class="card-link" onclick="openArticle('read-pairing')">What's it about?</button>
-          <a href="#book" class="card-cta">Book this →</a>
+          <button type="button" class="card-link" onclick="openArticle('read-pairing')" data-i18n="card.about">What's it about?</button>
+          <a href="#book" class="card-cta" data-i18n="card.cta">Book this →</a>
         </div>
       </div>
 
@@ -615,29 +629,29 @@
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="label">How it works</div>
-        <h2 class="display">Three steps<br>to your stars</h2>
+        <div class="label" data-i18n="how.label">How it works</div>
+        <h2 class="display" data-i18n="how.h2">Three steps<br>to your stars</h2>
       </div>
-      <p>No cosmic homework, no jargon to learn first. You bring your birth details and your questions — I bring the chart and the conversation.</p>
+      <p data-i18n="how.p">No cosmic homework, no jargon to learn first. You bring your birth details and your questions — I bring the chart and the conversation.</p>
     </div>
     <div class="steps">
       <div class="step">
         <span class="sglyph">☕</span>
         <div class="snum">01</div>
-        <h3>Book your seat</h3>
-        <p>Pick in person in Tallinn or online from anywhere, choose a time that suits you, and tell me which reading you're after.</p>
+        <h3 data-i18n="how.s1h">Book your seat</h3>
+        <p data-i18n="how.s1p">Pick in person in Tallinn or online from anywhere, choose a time that suits you, and tell me which reading you're after.</p>
       </div>
       <div class="step">
         <span class="sglyph">✦</span>
         <div class="snum">02</div>
-        <h3>Share your details</h3>
-        <p>Send your birth date, time and city. I draw up your chart and study it properly before we ever sit down.</p>
+        <h3 data-i18n="how.s2h">Share your details</h3>
+        <p data-i18n="how.s2p">Send your birth date, time and city. I draw up your chart and study it properly before we ever sit down.</p>
       </div>
       <div class="step">
         <span class="sglyph">♥</span>
         <div class="snum">03</div>
-        <h3>Sip &amp; read</h3>
-        <p>We meet over a drink and I walk you through your sky — what it means for you, in plain language, with room for all your questions.</p>
+        <h3 data-i18n="how.s3h">Sip &amp; read</h3>
+        <p data-i18n="how.s3p">We meet over a drink and I walk you through your sky — what it means for you, in plain language, with room for all your questions.</p>
       </div>
     </div>
   </div>
@@ -647,38 +661,38 @@
 <section id="calculator" class="calc-sec">
   <div class="wrap calc-grid">
     <div class="calc-intro">
-      <div class="label">On the house</div>
-      <h2 class="display">Calculate your<br>birth chart</h2>
-      <p>Drop in when and where you were born and we'll pour you the basics — your Sun, Moon and Rising. It's the first sip; the full story comes in a reading.</p>
-      <p class="note">no time? no worries — we'll still get your Sun ☉</p>
+      <div class="label" data-i18n="calc.label">On the house</div>
+      <h2 class="display" data-i18n="calc.h2">Calculate your<br>birth chart</h2>
+      <p data-i18n="calc.p">Drop in when and where you were born and we'll pour you the basics — your Sun, Moon and Rising. It's the first sip; the full story comes in a reading.</p>
+      <p class="note" data-i18n="calc.note">no time? no worries — we'll still get your Sun ☉</p>
     </div>
 
     <div class="calc-card">
       <div class="field">
-        <label for="bname">Your name (optional)</label>
-        <input type="text" id="bname" placeholder="e.g. Maria" autocomplete="off">
+        <label for="bname" data-i18n="calc.name">Your name (optional)</label>
+        <input type="text" id="bname" placeholder="e.g. Maria" autocomplete="off" data-i18n-ph="ph.name">
       </div>
       <div class="row">
         <div class="field">
-          <label for="bdate">Birth date</label>
+          <label for="bdate" data-i18n="calc.date">Birth date</label>
           <input type="date" id="bdate" min="1900-01-01" max="2025-12-31">
         </div>
         <div class="field">
-          <label for="btime">Birth time</label>
+          <label for="btime" data-i18n="calc.time">Birth time</label>
           <input type="time" id="btime">
         </div>
       </div>
-      <label class="check"><input type="checkbox" id="notime"> I don't know my exact time</label>
+      <label class="check"><input type="checkbox" id="notime"> <span data-i18n="calc.notime">I don't know my exact time</span></label>
 
       <div class="field">
-        <label for="bcity">Birth city</label>
+        <label for="bcity" data-i18n="calc.city">Birth city</label>
         <div class="ac-wrap">
-          <input type="text" id="bcity" placeholder="e.g. Mexico City, Mexico" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cityac">
+          <input type="text" id="bcity" placeholder="e.g. Mexico City, Mexico" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cityac" data-i18n-ph="ph.city">
           <div class="ac-list" id="cityac" role="listbox"></div>
         </div>
       </div>
 
-      <button type="button" class="adv-toggle" id="advToggle">Enter coordinates manually instead</button>
+      <button type="button" class="adv-toggle" id="advToggle" data-i18n="calc.adv">Enter coordinates manually instead</button>
       <div class="adv" id="advBox">
         <div class="row">
           <div class="field"><label for="blat">Latitude</label><input type="number" id="blat" step="any" placeholder="19.43"></div>
@@ -690,7 +704,7 @@
         </div>
       </div>
 
-      <button type="button" class="calc-btn" id="calcBtn">Read my chart ✦</button>
+      <button type="button" class="calc-btn" id="calcBtn" data-i18n="calc.btn">Read my chart ✦</button>
       <div class="calc-status" id="status"></div>
 
       <div class="result" id="result">
@@ -712,8 +726,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="label">On the board today</div>
-        <h2 class="display">Today's<br>pour</h2>
+        <div class="label" data-i18n="sky.label">On the board today</div>
+        <h2 class="display" data-i18n="sky.h2">Today's<br>pour</h2>
       </div>
       <p id="skyDate">What the sky's serving right now — poured straight from where the planets actually are. The same sky that's over your cup.</p>
     </div>
@@ -727,17 +741,17 @@
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="label">Cosmic chemistry</div>
-        <h2 class="display">Two cups,<br>one table</h2>
+        <div class="label" data-i18n="match.label">Cosmic chemistry</div>
+        <h2 class="display" data-i18n="match.h2">Two cups,<br>one table</h2>
       </div>
-      <p>A little taste of how two charts blend — your core, your love, your spark, side by side. Just a sip; the full pour is a Perfect Pairing reading over a drink.</p>
+      <p data-i18n="match.p">A little taste of how two charts blend — your core, your love, your spark, side by side. Just a sip; the full pour is a Perfect Pairing reading over a drink.</p>
     </div>
     <div class="match-card">
       <div class="row">
-        <div class="field"><label for="m1">You — birth date</label><input type="date" id="m1" min="1900-01-01" max="2025-12-31"></div>
-        <div class="field"><label for="m2">Them — birth date</label><input type="date" id="m2" min="1900-01-01" max="2025-12-31"></div>
+        <div class="field"><label for="m1" data-i18n="match.m1">You — birth date</label><input type="date" id="m1" min="1900-01-01" max="2025-12-31"></div>
+        <div class="field"><label for="m2" data-i18n="match.m2">Them — birth date</label><input type="date" id="m2" min="1900-01-01" max="2025-12-31"></div>
       </div>
-      <button class="calc-btn" id="matchBtn">Taste the blend →</button>
+      <button class="calc-btn" id="matchBtn" data-i18n="match.btn">Taste the blend →</button>
       <div class="calc-status" id="matchStatus"></div>
       <div class="match-result" id="matchResult"></div>
     </div>
@@ -757,13 +771,13 @@
 <section id="about">
   <div class="wrap about">
     <div>
-      <div class="label">Who's pouring</div>
-      <h2 class="display">Hi, I'm MD.</h2>
-      <p>I'm from Venezuela, and I fell for astrology at twelve years old. For nearly two decades it's been the lens I see the world — and myself — through.</p>
-      <p>It got serious in 2020. When the world stopped and we were all forced to look inward and face what we'd kept in storage, I had a deep need to understand myself: who am I, and what's my purpose here? Astrology became the tool that actually answered it.</p>
-      <p>Since then I've helped many, many people get to know themselves better, find a real sense of agency over their path, and understand the gifts they were born with and the energies available to them.</p>
-      <p>Every reading happens the way it should — over a coffee, tea, or drink of your choice. In person in Tallinn, or online from wherever you are.</p>
-      <p class="sig">— see you under the stars, MD ✦</p>
+      <div class="label" data-i18n="about.label">Who's pouring</div>
+      <h2 class="display" data-i18n="about.h2">Hi, I'm MD.</h2>
+      <p data-i18n="about.p1">I'm from Venezuela, and I fell for astrology at twelve years old. For nearly two decades it's been the lens I see the world — and myself — through.</p>
+      <p data-i18n="about.p2">It got serious in 2020. When the world stopped and we were all forced to look inward and face what we'd kept in storage, I had a deep need to understand myself: who am I, and what's my purpose here? Astrology became the tool that actually answered it.</p>
+      <p data-i18n="about.p3">Since then I've helped many, many people get to know themselves better, find a real sense of agency over their path, and understand the gifts they were born with and the energies available to them.</p>
+      <p data-i18n="about.p4">Every reading happens the way it should — over a coffee, tea, or drink of your choice. In person in Tallinn, or online from wherever you are.</p>
+      <p class="sig" data-i18n="about.sig">— see you under the stars, MD ✦</p>
     </div>
     <div class="about-art">
       <img class="about-photo" loading="lazy" src="icons/about-md.jpg" alt="MD, founder of sip & stars, in a riso-print portrait">
@@ -784,23 +798,23 @@
 <!-- JOURNAL -->
 <section id="journal">
   <div class="wrap">
-    <div class="sec-head reveal"><div><div class="label">The journal</div><h2 class="display">Notes from<br>under the sky</h2></div><p>Astrology in plain language — what your chart, the planets, and the moon actually mean for real life. New notes added often.</p></div>
+    <div class="sec-head reveal"><div><div class="label" data-i18n="journal.label">The journal</div><h2 class="display" data-i18n="journal.h2">Notes from<br>under the sky</h2></div><p data-i18n="journal.p">Astrology in plain language — what your chart, the planets, and the moon actually mean for real life. New notes added often.</p></div>
     <div class="journal-grid">
-      <article class="jcard j1 reveal" tabindex="0" role="button" aria-label="Read: What's a Birth Chart, Really?" onclick="openArticle('art-1')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-1')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="6"/><line x1="80.0" y1="50.0" x2="96.0" y2="50.0"/><line x1="76.0" y1="65.0" x2="89.8" y2="73.0"/><line x1="65.0" y1="76.0" x2="73.0" y2="89.8"/><line x1="50.0" y1="80.0" x2="50.0" y2="96.0"/><line x1="35.0" y1="76.0" x2="27.0" y2="89.8"/><line x1="24.0" y1="65.0" x2="10.2" y2="73.0"/><line x1="20.0" y1="50.0" x2="4.0" y2="50.0"/><line x1="24.0" y1="35.0" x2="10.2" y2="27.0"/><line x1="35.0" y1="24.0" x2="27.0" y2="10.2"/><line x1="50.0" y1="20.0" x2="50.0" y2="4.0"/><line x1="65.0" y1="24.0" x2="73.0" y2="10.2"/><line x1="76.0" y1="35.0" x2="89.8" y2="27.0"/><circle cx="50" cy="50" r="2.4" fill="currentColor"/><path d="M50 14 l1.6 4 4.3.4-3.3 2.8 1 4.2-3.6-2.3-3.6 2.3 1-4.2-3.3-2.8 4.3-.4z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag">The basics</span><h3>What's a Birth Chart, Really?</h3><p>The most honest selfie you'll ever take — no camera required.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j2 reveal" tabindex="0" role="button" aria-label="Read: Your Big Three, Decoded" onclick="openArticle('art-2')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-2')}"><div class="jart"><svg viewBox="0 0 150 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="28" cy="30" r="9"/><line x1="37.0" y1="30.0" x2="43.0" y2="30.0"/><line x1="34.4" y1="36.4" x2="38.6" y2="40.6"/><line x1="28.0" y1="39.0" x2="28.0" y2="45.0"/><line x1="21.6" y1="36.4" x2="17.4" y2="40.6"/><line x1="19.0" y1="30.0" x2="13.0" y2="30.0"/><line x1="21.6" y1="23.6" x2="17.4" y2="19.4"/><line x1="28.0" y1="21.0" x2="28.0" y2="15.0"/><line x1="34.4" y1="23.6" x2="38.6" y2="19.4"/><path d="M82 14 a16 16 0 1 0 0 32 a19 19 0 0 1 0 -32 z" fill="currentColor" stroke="none"/><line x1="106" y1="42" x2="140" y2="42"/><path d="M114 42 a9 9 0 0 1 18 0"/><line x1="123" y1="26" x2="123" y2="20"/></svg></div><div class="jbody"><span class="jtag">Start here</span><h3>Your Big Three, Decoded</h3><p>Sun, moon & rising — the headline of who you are.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j3 reveal" tabindex="0" role="button" aria-label="Read: Your Rising Sign, Explained" onclick="openArticle('art-3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-3')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="66" x2="88" y2="66"/><path d="M32 66 a18 18 0 0 1 36 0"/><line x1="50" y1="40" x2="50" y2="30"/><line x1="34" y1="46" x2="28" y2="40"/><line x1="66" y1="46" x2="72" y2="40"/><path d="M78 60 l8 -8 8 8"/></svg></div><div class="jbody"><span class="jtag">Know yourself</span><h3>Your Rising Sign, Explained</h3><p>The energy people meet before you say a word.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j4 reveal" tabindex="0" role="button" aria-label="Read: Your Saturn Return, Explained" onclick="openArticle('art-4')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-4')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="46" r="20"/><ellipse cx="50" cy="48" rx="40" ry="13" transform="rotate(-22 50 48)"/></svg></div><div class="jbody"><span class="jtag">Big moments</span><h3>Your Saturn Return, Explained</h3><p>The most dramatic glow-up of your life is on a schedule.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j5 reveal" tabindex="0" role="button" aria-label="Read: Mercury Retrograde, Calmly Explained" onclick="openArticle('art-5')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-5')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="40" r="13"/><line x1="63.0" y1="40.0" x2="69.0" y2="40.0"/><line x1="59.2" y1="49.2" x2="63.4" y2="53.4"/><line x1="50.0" y1="53.0" x2="50.0" y2="59.0"/><line x1="40.8" y1="49.2" x2="36.6" y2="53.4"/><line x1="37.0" y1="40.0" x2="31.0" y2="40.0"/><line x1="40.8" y1="30.8" x2="36.6" y2="26.6"/><line x1="50.0" y1="27.0" x2="50.0" y2="21.0"/><line x1="59.2" y1="30.8" x2="63.4" y2="26.6"/><path d="M24 66 q26 20 52 0"/><path d="M24 66 l10 -3 M24 66 l3 10"/></svg></div><div class="jbody"><span class="jtag">No panic</span><h3>Mercury Retrograde, Calmly Explained</h3><p>The internet's favorite scapegoat, minus the panic.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j1 reveal" tabindex="0" role="button" aria-label="Read: Living by the Moon" onclick="openArticle('art-6')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-6')}"><div class="jart"><svg viewBox="0 0 130 40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="15" cy="20" r="12"/><g><circle cx="45" cy="20" r="12"/><path d="M45 8 a12 12 0 0 1 0 24 z" fill="currentColor" stroke="none"/></g><circle cx="75" cy="20" r="12" fill="currentColor"/><g><circle cx="105" cy="20" r="12"/><path d="M105 8 a12 12 0 0 0 0 24 z" fill="currentColor" stroke="none"/></g></svg></div><div class="jbody"><span class="jtag">Rhythms</span><h3>Living by the Moon</h3><p>Stop fighting the cycle — start riding it.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j2 reveal" tabindex="0" role="button" aria-label="Read: Your North Node: The Whole Point of You" onclick="openArticle('art-7')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-7')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 74 C 22 28, 78 28, 70 74"/><circle cx="30" cy="76" r="5"/><circle cx="70" cy="76" r="5"/><path d="M50 18 l1.4 3.4 3.7.3-2.8 2.4.8 3.6-3.1-1.9-3.1 1.9.8-3.6-2.8-2.4 3.7-.3z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag">Your purpose</span><h3>Your North Node: The Whole Point of You</h3><p>The placement everyone's obsessed with — it points at your purpose.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j3 reveal" tabindex="0" role="button" aria-label="Read: Your Venus Sign: How You Actually Love" onclick="openArticle('art-8')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-8')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="36" r="17"/><line x1="50" y1="53" x2="50" y2="84"/><line x1="37" y1="70" x2="63" y2="70"/></svg></div><div class="jbody"><span class="jtag">Love</span><h3>Your Venus Sign: How You Actually Love</h3><p>Your chart mapped your romantic style from day one.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j4 reveal" tabindex="0" role="button" aria-label="Read: Are You Two Compatible?" onclick="openArticle('art-9')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-9')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="52" r="22"/><circle cx="60" cy="52" r="22"/><path d="M50 40 l2.2 6.4 6.8.5-5.3 4.2 1.8 6.6-5.5-3.8-5.5 3.8 1.8-6.6-5.3-4.2 6.8-.5z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag">Compatibility</span><h3>Are You Two Compatible?</h3><p>Synastry, honestly — beyond 'we're both fire signs.'</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j5 reveal" tabindex="0" role="button" aria-label="Read: What Your Birthday Chart Means" onclick="openArticle('art-10')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-10')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="11"/><line x1="61.0" y1="50.0" x2="67.0" y2="50.0"/><line x1="57.8" y1="57.8" x2="62.0" y2="62.0"/><line x1="50.0" y1="61.0" x2="50.0" y2="67.0"/><line x1="42.2" y1="57.8" x2="38.0" y2="62.0"/><line x1="39.0" y1="50.0" x2="33.0" y2="50.0"/><line x1="42.2" y1="42.2" x2="38.0" y2="38.0"/><line x1="50.0" y1="39.0" x2="50.0" y2="33.0"/><line x1="57.8" y1="42.2" x2="62.0" y2="38.0"/><circle cx="50" cy="50" r="30" stroke-dasharray="3 5"/><circle cx="80" cy="50" r="3.6" fill="currentColor" stroke="none"/><path d="M80 50 l-7 -4 M80 50 l-4 7"/></svg></div><div class="jbody"><span class="jtag">Your year</span><h3>What Your Birthday Chart Means</h3><p>Your personal new year comes with a forecast.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j1 reveal" tabindex="0" role="button" aria-label="Read: Astrocartography: Where Are You Luckiest?" onclick="openArticle('art-11')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-11')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="52" r="33"/><ellipse cx="50" cy="52" rx="13" ry="33"/><line x1="17" y1="52" x2="83" y2="52"/><path d="M21 38 q29 -10 58 0"/><path d="M21 66 q29 10 58 0"/><path d="M64 33 l1.8 4 4.3.5-3.2 2.9.9 4.2-3.8-2.2-3.8 2.2.9-4.2-3.2-2.9 4.3-.5z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag">Where to live</span><h3>Astrocartography: Where Are You Luckiest?</h3><p>The 'where should I live' map taking over your feed.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j2 reveal" tabindex="0" role="button" aria-label="Read: The Astrology of Burnout" onclick="openArticle('art-12')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-12')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 52 h36 v12 a14 14 0 0 1 -14 14 h-8 a14 14 0 0 1 -14 -14 z"/><path d="M66 56 h7 a8 8 0 0 1 0 16 h-7"/><path d="M42 32 q-5 7 0 14 M54 30 q-5 7 0 14"/></svg></div><div class="jbody"><span class="jtag">Soft life</span><h3>The Astrology of Burnout</h3><p>Why you're tired in a way sleep doesn't fix — and how you're built to refill.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j3 reveal" tabindex="0" role="button" aria-label="Read: Why You Keep Falling for the Same Type" onclick="openArticle('art-13')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-13')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M50 72 C 28 54, 30 33, 44 33 C 50 33, 50 41, 50 41 C 50 41, 50 33, 56 33 C 70 33, 72 54, 50 72 Z" fill="currentColor" stroke="none"/><ellipse cx="50" cy="50" rx="42" ry="20" transform="rotate(-22 50 50)"/></svg></div><div class="jbody"><span class="jtag">Love</span><h3>Why You Keep Falling for the Same Type</h3><p>Spoiler: it's written in your Venus and Mars — and more fixable than your ex.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j4 reveal" tabindex="0" role="button" aria-label="Read: The 12 Houses, Explained Over Coffee" onclick="openArticle('art-14')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-14')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="14"/><line x1="16" y1="50" x2="84" y2="50"/><line x1="79.4" y1="33" x2="20.6" y2="67"/><line x1="67" y1="20.6" x2="33" y2="79.4"/><line x1="50" y1="16" x2="50" y2="84"/><line x1="33" y1="20.6" x2="67" y2="79.4"/><line x1="20.6" y1="33" x2="79.4" y2="67"/></svg></div><div class="jbody"><span class="jtag">The basics</span><h3>The 12 Houses, Explained Over Coffee</h3><p>Signs are the flavor. Planets are the guests. Houses are the rooms it happens in.</p><span class="jread">Read &rarr;</span></div></article>
-      <article class="jcard j5 reveal" tabindex="0" role="button" aria-label="Read: Chiron, Your Tender Spot" onclick="openArticle('art-15')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-15')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="30" r="13"/><line x1="50" y1="43" x2="50" y2="84"/><path d="M50 60 l17 -14 M50 60 l17 14"/></svg></div><div class="jbody"><span class="jtag">Deep cuts</span><h3>Chiron: Your Tender Spot Is Also Your Gift</h3><p>The wound you didn't choose became the medicine only you can give.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j1 reveal" tabindex="0" role="button" aria-label="Read: What's a Birth Chart, Really?" onclick="openArticle('art-1')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-1')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="6"/><line x1="80.0" y1="50.0" x2="96.0" y2="50.0"/><line x1="76.0" y1="65.0" x2="89.8" y2="73.0"/><line x1="65.0" y1="76.0" x2="73.0" y2="89.8"/><line x1="50.0" y1="80.0" x2="50.0" y2="96.0"/><line x1="35.0" y1="76.0" x2="27.0" y2="89.8"/><line x1="24.0" y1="65.0" x2="10.2" y2="73.0"/><line x1="20.0" y1="50.0" x2="4.0" y2="50.0"/><line x1="24.0" y1="35.0" x2="10.2" y2="27.0"/><line x1="35.0" y1="24.0" x2="27.0" y2="10.2"/><line x1="50.0" y1="20.0" x2="50.0" y2="4.0"/><line x1="65.0" y1="24.0" x2="73.0" y2="10.2"/><line x1="76.0" y1="35.0" x2="89.8" y2="27.0"/><circle cx="50" cy="50" r="2.4" fill="currentColor"/><path d="M50 14 l1.6 4 4.3.4-3.3 2.8 1 4.2-3.6-2.3-3.6 2.3 1-4.2-3.3-2.8 4.3-.4z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.the_basics">The basics</span><h3>What's a Birth Chart, Really?</h3><p>The most honest selfie you'll ever take — no camera required.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j2 reveal" tabindex="0" role="button" aria-label="Read: Your Big Three, Decoded" onclick="openArticle('art-2')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-2')}"><div class="jart"><svg viewBox="0 0 150 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="28" cy="30" r="9"/><line x1="37.0" y1="30.0" x2="43.0" y2="30.0"/><line x1="34.4" y1="36.4" x2="38.6" y2="40.6"/><line x1="28.0" y1="39.0" x2="28.0" y2="45.0"/><line x1="21.6" y1="36.4" x2="17.4" y2="40.6"/><line x1="19.0" y1="30.0" x2="13.0" y2="30.0"/><line x1="21.6" y1="23.6" x2="17.4" y2="19.4"/><line x1="28.0" y1="21.0" x2="28.0" y2="15.0"/><line x1="34.4" y1="23.6" x2="38.6" y2="19.4"/><path d="M82 14 a16 16 0 1 0 0 32 a19 19 0 0 1 0 -32 z" fill="currentColor" stroke="none"/><line x1="106" y1="42" x2="140" y2="42"/><path d="M114 42 a9 9 0 0 1 18 0"/><line x1="123" y1="26" x2="123" y2="20"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.start_here">Start here</span><h3>Your Big Three, Decoded</h3><p>Sun, moon & rising — the headline of who you are.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j3 reveal" tabindex="0" role="button" aria-label="Read: Your Rising Sign, Explained" onclick="openArticle('art-3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-3')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="66" x2="88" y2="66"/><path d="M32 66 a18 18 0 0 1 36 0"/><line x1="50" y1="40" x2="50" y2="30"/><line x1="34" y1="46" x2="28" y2="40"/><line x1="66" y1="46" x2="72" y2="40"/><path d="M78 60 l8 -8 8 8"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.know_yourself">Know yourself</span><h3>Your Rising Sign, Explained</h3><p>The energy people meet before you say a word.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j4 reveal" tabindex="0" role="button" aria-label="Read: Your Saturn Return, Explained" onclick="openArticle('art-4')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-4')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="46" r="20"/><ellipse cx="50" cy="48" rx="40" ry="13" transform="rotate(-22 50 48)"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.big_moments">Big moments</span><h3>Your Saturn Return, Explained</h3><p>The most dramatic glow-up of your life is on a schedule.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j5 reveal" tabindex="0" role="button" aria-label="Read: Mercury Retrograde, Calmly Explained" onclick="openArticle('art-5')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-5')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="40" r="13"/><line x1="63.0" y1="40.0" x2="69.0" y2="40.0"/><line x1="59.2" y1="49.2" x2="63.4" y2="53.4"/><line x1="50.0" y1="53.0" x2="50.0" y2="59.0"/><line x1="40.8" y1="49.2" x2="36.6" y2="53.4"/><line x1="37.0" y1="40.0" x2="31.0" y2="40.0"/><line x1="40.8" y1="30.8" x2="36.6" y2="26.6"/><line x1="50.0" y1="27.0" x2="50.0" y2="21.0"/><line x1="59.2" y1="30.8" x2="63.4" y2="26.6"/><path d="M24 66 q26 20 52 0"/><path d="M24 66 l10 -3 M24 66 l3 10"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.no_panic">No panic</span><h3>Mercury Retrograde, Calmly Explained</h3><p>The internet's favorite scapegoat, minus the panic.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j1 reveal" tabindex="0" role="button" aria-label="Read: Living by the Moon" onclick="openArticle('art-6')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-6')}"><div class="jart"><svg viewBox="0 0 130 40" fill="none" stroke="currentColor" stroke-width="2"><circle cx="15" cy="20" r="12"/><g><circle cx="45" cy="20" r="12"/><path d="M45 8 a12 12 0 0 1 0 24 z" fill="currentColor" stroke="none"/></g><circle cx="75" cy="20" r="12" fill="currentColor"/><g><circle cx="105" cy="20" r="12"/><path d="M105 8 a12 12 0 0 0 0 24 z" fill="currentColor" stroke="none"/></g></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.rhythms">Rhythms</span><h3>Living by the Moon</h3><p>Stop fighting the cycle — start riding it.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j2 reveal" tabindex="0" role="button" aria-label="Read: Your North Node: The Whole Point of You" onclick="openArticle('art-7')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-7')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 74 C 22 28, 78 28, 70 74"/><circle cx="30" cy="76" r="5"/><circle cx="70" cy="76" r="5"/><path d="M50 18 l1.4 3.4 3.7.3-2.8 2.4.8 3.6-3.1-1.9-3.1 1.9.8-3.6-2.8-2.4 3.7-.3z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.your_purpose">Your purpose</span><h3>Your North Node: The Whole Point of You</h3><p>The placement everyone's obsessed with — it points at your purpose.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j3 reveal" tabindex="0" role="button" aria-label="Read: Your Venus Sign: How You Actually Love" onclick="openArticle('art-8')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-8')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="36" r="17"/><line x1="50" y1="53" x2="50" y2="84"/><line x1="37" y1="70" x2="63" y2="70"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.love">Love</span><h3>Your Venus Sign: How You Actually Love</h3><p>Your chart mapped your romantic style from day one.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j4 reveal" tabindex="0" role="button" aria-label="Read: Are You Two Compatible?" onclick="openArticle('art-9')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-9')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="40" cy="52" r="22"/><circle cx="60" cy="52" r="22"/><path d="M50 40 l2.2 6.4 6.8.5-5.3 4.2 1.8 6.6-5.5-3.8-5.5 3.8 1.8-6.6-5.3-4.2 6.8-.5z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.compatibility">Compatibility</span><h3>Are You Two Compatible?</h3><p>Synastry, honestly — beyond 'we're both fire signs.'</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j5 reveal" tabindex="0" role="button" aria-label="Read: What Your Birthday Chart Means" onclick="openArticle('art-10')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-10')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="11"/><line x1="61.0" y1="50.0" x2="67.0" y2="50.0"/><line x1="57.8" y1="57.8" x2="62.0" y2="62.0"/><line x1="50.0" y1="61.0" x2="50.0" y2="67.0"/><line x1="42.2" y1="57.8" x2="38.0" y2="62.0"/><line x1="39.0" y1="50.0" x2="33.0" y2="50.0"/><line x1="42.2" y1="42.2" x2="38.0" y2="38.0"/><line x1="50.0" y1="39.0" x2="50.0" y2="33.0"/><line x1="57.8" y1="42.2" x2="62.0" y2="38.0"/><circle cx="50" cy="50" r="30" stroke-dasharray="3 5"/><circle cx="80" cy="50" r="3.6" fill="currentColor" stroke="none"/><path d="M80 50 l-7 -4 M80 50 l-4 7"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.your_year">Your year</span><h3>What Your Birthday Chart Means</h3><p>Your personal new year comes with a forecast.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j1 reveal" tabindex="0" role="button" aria-label="Read: Astrocartography: Where Are You Luckiest?" onclick="openArticle('art-11')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-11')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="52" r="33"/><ellipse cx="50" cy="52" rx="13" ry="33"/><line x1="17" y1="52" x2="83" y2="52"/><path d="M21 38 q29 -10 58 0"/><path d="M21 66 q29 10 58 0"/><path d="M64 33 l1.8 4 4.3.5-3.2 2.9.9 4.2-3.8-2.2-3.8 2.2.9-4.2-3.2-2.9 4.3-.5z" fill="currentColor" stroke="none"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.where_to_live">Where to live</span><h3>Astrocartography: Where Are You Luckiest?</h3><p>The 'where should I live' map taking over your feed.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j2 reveal" tabindex="0" role="button" aria-label="Read: The Astrology of Burnout" onclick="openArticle('art-12')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-12')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 52 h36 v12 a14 14 0 0 1 -14 14 h-8 a14 14 0 0 1 -14 -14 z"/><path d="M66 56 h7 a8 8 0 0 1 0 16 h-7"/><path d="M42 32 q-5 7 0 14 M54 30 q-5 7 0 14"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.soft_life">Soft life</span><h3>The Astrology of Burnout</h3><p>Why you're tired in a way sleep doesn't fix — and how you're built to refill.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j3 reveal" tabindex="0" role="button" aria-label="Read: Why You Keep Falling for the Same Type" onclick="openArticle('art-13')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-13')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M50 72 C 28 54, 30 33, 44 33 C 50 33, 50 41, 50 41 C 50 41, 50 33, 56 33 C 70 33, 72 54, 50 72 Z" fill="currentColor" stroke="none"/><ellipse cx="50" cy="50" rx="42" ry="20" transform="rotate(-22 50 50)"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.love">Love</span><h3>Why You Keep Falling for the Same Type</h3><p>Spoiler: it's written in your Venus and Mars — and more fixable than your ex.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j4 reveal" tabindex="0" role="button" aria-label="Read: The 12 Houses, Explained Over Coffee" onclick="openArticle('art-14')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-14')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="14"/><line x1="16" y1="50" x2="84" y2="50"/><line x1="79.4" y1="33" x2="20.6" y2="67"/><line x1="67" y1="20.6" x2="33" y2="79.4"/><line x1="50" y1="16" x2="50" y2="84"/><line x1="33" y1="20.6" x2="67" y2="79.4"/><line x1="20.6" y1="33" x2="79.4" y2="67"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.the_basics">The basics</span><h3>The 12 Houses, Explained Over Coffee</h3><p>Signs are the flavor. Planets are the guests. Houses are the rooms it happens in.</p><span class="jread">Read &rarr;</span></div></article>
+      <article class="jcard j5 reveal" tabindex="0" role="button" aria-label="Read: Chiron, Your Tender Spot" onclick="openArticle('art-15')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openArticle('art-15')}"><div class="jart"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="30" r="13"/><line x1="50" y1="43" x2="50" y2="84"/><path d="M50 60 l17 -14 M50 60 l17 14"/></svg></div><div class="jbody"><span class="jtag" data-i18n="jtag.deep_cuts">Deep cuts</span><h3>Chiron: Your Tender Spot Is Also Your Gift</h3><p>The wound you didn't choose became the medicine only you can give.</p><span class="jread">Read &rarr;</span></div></article>
     </div>
   </div>
 </section>
@@ -810,35 +824,35 @@
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="label">Good to know</div>
-        <h2 class="display">Questions,<br>answered</h2>
+        <div class="label" data-i18n="faq.label">Good to know</div>
+        <h2 class="display" data-i18n="faq.h2">Questions,<br>answered</h2>
       </div>
-      <p>Everything you might be wondering before you book. Still curious about something? Just email me.</p>
+      <p data-i18n="faq.p">Everything you might be wondering before you book. Still curious about something? Just email me.</p>
     </div>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Do I need to know my exact birth time?<span class="fic">+</span></button>
-        <div class="faq-a"><p>For your full chart — including your Moon and Rising — yes, even an approximate time helps a lot. Without it I can still read your Sun and the slower planets. Check your birth certificate, or tell me a rough range and we'll work with it.</p></div>
+        <button class="faq-q" aria-expanded="false" data-i18n="faq.q1">Do I need to know my exact birth time?<span class="fic">+</span></button>
+        <div class="faq-a"><p data-i18n="faq.a1">For your full chart — including your Moon and Rising — yes, even an approximate time helps a lot. Without it I can still read your Sun and the slower planets. Check your birth certificate, or tell me a rough range and we'll work with it.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Where do the in-person readings happen?<span class="fic">+</span></button>
-        <div class="faq-a"><p>In Tallinn, over a coffee, tea, or drink of your choice — I'll share the spot when you book. Not in Tallinn? I read for people anywhere in the world over video, and it's just as personal.</p></div>
+        <button class="faq-q" aria-expanded="false" data-i18n="faq.q2">Where do the in-person readings happen?<span class="fic">+</span></button>
+        <div class="faq-a"><p data-i18n="faq.a2">In Tallinn, over a coffee, tea, or drink of your choice — I'll share the spot when you book. Not in Tallinn? I read for people anywhere in the world over video, and it's just as personal.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">What languages do you read in?<span class="fic">+</span></button>
-        <div class="faq-a"><p>English and Spanish — whichever feels more like home to you. Just let me know when you book.</p></div>
+        <button class="faq-q" aria-expanded="false" data-i18n="faq.q3">What languages do you read in?<span class="fic">+</span></button>
+        <div class="faq-a"><p data-i18n="faq.a3">English and Spanish — whichever feels more like home to you. Just let me know when you book.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">I'm completely new to astrology. Is that okay?<span class="fic">+</span></button>
-        <div class="faq-a"><p>More than okay — it's my favourite kind of reading. Everything is in plain language, no symbols to memorise beforehand. You bring yourself and your questions; I bring the map.</p></div>
+        <button class="faq-q" aria-expanded="false" data-i18n="faq.q4">I'm completely new to astrology. Is that okay?<span class="fic">+</span></button>
+        <div class="faq-a"><p data-i18n="faq.a4">More than okay — it's my favourite kind of reading. Everything is in plain language, no symbols to memorise beforehand. You bring yourself and your questions; I bring the map.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">How do I prepare?<span class="fic">+</span></button>
-        <div class="faq-a"><p>Bring three things: your birth date, your birth time, and your birth city — plus whatever questions are on your mind. That's all I need to read your sky.</p></div>
+        <button class="faq-q" aria-expanded="false" data-i18n="faq.q5">How do I prepare?<span class="fic">+</span></button>
+        <div class="faq-a"><p data-i18n="faq.a5">Bring three things: your birth date, your birth time, and your birth city — plus whatever questions are on your mind. That's all I need to read your sky.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Which reading should I choose?<span class="fic">+</span></button>
-        <div class="faq-a"><p>New to your chart? Start with the <b>House Blend</b> — your full birth chart. Curious about the year ahead? The <b>Refill</b> reads your solar return. Wondering about a relationship? <b>Perfect Pairing</b> looks at two charts together.</p></div>
+        <button class="faq-q" aria-expanded="false" data-i18n="faq.q6">Which reading should I choose?<span class="fic">+</span></button>
+        <div class="faq-a"><p data-i18n="faq.a6">New to your chart? Start with the <b>House Blend</b> — your full birth chart. Curious about the year ahead? The <b>Refill</b> reads your solar return. Wondering about a relationship? <b>Perfect Pairing</b> looks at two charts together.</p></div>
       </div>
     </div>
   </div>
@@ -848,14 +862,14 @@
 <section id="book" class="book">
   <div class="wrap">
     <div class="book-head">
-      <div class="label">Reserve your seat</div>
-      <h2>let's read your sky <span class="amp">&amp;</span> pour a drink</h2>
-      <p>Pick where you'd like to meet, choose a time, and tell me which reading you're after. I'll bring the chart — you bring the questions.</p>
+      <div class="label" data-i18n="book.label">Reserve your seat</div>
+      <h2 data-i18n="book.h2">let's read your sky <span class="amp">&amp;</span> pour a drink</h2>
+      <p data-i18n="book.p">Pick where you'd like to meet, choose a time, and tell me which reading you're after. I'll bring the chart — you bring the questions.</p>
     </div>
 
     <div class="book-toggle" role="tablist" aria-label="Choose location">
-      <button class="loc-btn active" data-loc="tallinn" role="tab" aria-selected="true">☕ In person · Tallinn</button>
-      <button class="loc-btn" data-loc="online" role="tab" aria-selected="false">✦ Online · anywhere</button>
+      <button class="loc-btn active" data-loc="tallinn" role="tab" aria-selected="true" data-i18n="book.loc1">☕ In person · Tallinn</button>
+      <button class="loc-btn" data-loc="online" role="tab" aria-selected="false" data-i18n="book.loc2">✦ Online · anywhere</button>
     </div>
 
     <div id="calMount" class="cal-mount"></div>
@@ -867,23 +881,23 @@
   <div class="wrap foot-grid">
     <div class="foot-brand">
       <span class="mark">sip <span class="amp">&amp;</span> stars</span>
-      <p>Astrology by MD. Chart readings over a coffee or tea — in Tallinn or online.</p>
+      <p data-i18n="foot.tag">Astrology by MD. Chart readings over a coffee or tea — in Tallinn or online.</p>
     </div>
     <div class="foot-col">
-      <h4>Readings</h4>
+      <h4 data-i18n="foot.readings">Readings</h4>
       <a href="#readings">House Blend</a>
       <a href="#readings">The Refill</a>
       <a href="#readings">Perfect Pairing</a>
     </div>
     <div class="foot-col">
-      <h4>More</h4>
+      <h4 data-i18n="foot.more">More</h4>
       <a href="#journal">Journal</a>
       <a href="#calculator">Free birth chart</a>
       <a href="#about">About MD</a>
       <a href="mailto:elaastrology@gmail.com">Email</a>
     </div>
     <div class="foot-col">
-      <h4>Find us</h4>
+      <h4 data-i18n="foot.find">Find us</h4>
       <a href="https://instagram.com/mdmundi" target="_blank" rel="noopener">Instagram</a>
       <a href="https://tiktok.com/@worldlypenguin" target="_blank" rel="noopener">TikTok</a>
     </div>
@@ -1950,6 +1964,32 @@ document.querySelectorAll('.faq-q').forEach(function(btn){
   size(); window.addEventListener('resize',size);
   if(reduce){ for(var i=0;i<stars.length;i++) star(stars[i],0.4); ctx.globalAlpha=1; }
   else requestAnimationFrame(frame);
+})();
+</script>
+
+<!-- ===== i18n (EN / ES) ===== -->
+<script>
+/* Spanish strings, keyed to data-i18n attributes. Anything without an entry
+   gracefully stays in English, so the toggle never looks broken. */
+const I18N_ES = {"calc.btn":"Leer mi carta ✦","calc.adv":"Introducir coordenadas a mano","nav.readings": "Lecturas","nav.freechart": "Carta gratis","nav.journal": "Diario","nav.about": "Sobre mí","nav.book": "Reservar","calc.notime": "No sé mi hora exacta","hero.eyebrow": "astrología, servida sin prisa","hero.sub": "Ponte cómoda. Leo el cielo bajo el que naciste — con un café, un té o la bebida que prefieras. En persona en Tallin, u online desde donde estés.","hero.cta1": "Reservar una lectura →","hero.cta2": "Calcula tu carta","readings.label": "La carta","readings.h2": "Tres formas<br>de leer el cielo","readings.p": "Cada lectura es una conversación de verdad — tu carta sobre la mesa, una bebida en la mano y nada de jerga. Solo lo que el cielo significa de verdad para ti.","card1.sub": "Tu carta natal · 90 min","card1.p": "Tu plano cósmico, puro. Leo la carta bajo la que naciste — las energías con las que llegaste y los dones que traes contigo desde el primer momento.","card2.sub": "Tu revolución solar · 60 min","card2.p": "Una vez al año el sol vuelve a donde empezó: tu cumpleaños. Mapeo los temas, lecciones y matices de tu próxima vuelta — un pronóstico personal para el año que viene.","card3.sub": "Sinastría y compatibilidad · 60 min","card3.p": "Dos cartas, lado a lado. Miro cómo tus energías se mezclan con las de otra persona — la química, la fricción y las notas que hacen que funcione.","how.label": "Cómo funciona","how.h2": "Tres pasos<br>hacia tus estrellas","how.p": "Sin tarea cósmica ni jerga que aprender. Tú traes tus datos de nacimiento y tus preguntas — yo traigo la carta y la conversación.","how.s1h": "Reserva tu lugar","how.s1p": "Elige en persona en Tallin u online desde donde estés, escoge una hora que te venga bien y dime qué lectura quieres.","how.s2h": "Comparte tus datos","how.s2p": "Envíame tu fecha, hora y ciudad de nacimiento. Preparo tu carta y la estudio a fondo antes de sentarnos.","how.s3h": "Un sorbo y a leer","how.s3p": "Nos vemos con una bebida y te acompaño por tu cielo — lo que significa para ti, en palabras claras y con espacio para todas tus preguntas.","sky.label": "Hoy en la pizarra","sky.h2": "La taza<br>de hoy","match.label": "Química cósmica","match.h2": "Dos tazas,<br>una mesa","match.p": "Un pequeño adelanto de cómo se mezclan dos cartas — tu esencia, tu amor, tu chispa, lado a lado. Solo un sorbo; el servicio completo es una lectura Perfect Pairing con una bebida.","match.m1": "Tú — fecha de nacimiento","match.m2": "La otra persona — fecha","match.btn": "Prueba la mezcla →","calc.label": "Cortesía de la casa","calc.h2": "Calcula tu<br>carta natal","calc.p": "Dime cuándo y dónde naciste y te servimos lo básico — tu Sol, tu Luna y tu Ascendente. Es el primer sorbo; la historia completa llega en una lectura.","calc.note": "¿sin hora? sin problema — igual sacamos tu Sol ☉","calc.name": "Tu nombre (opcional)","calc.date": "Fecha de nacimiento","calc.time": "Hora de nacimiento","calc.city": "Ciudad de nacimiento","about.label": "Quién sirve","about.h2": "Hola, soy MD.","about.p1": "Soy de Venezuela y me enamoré de la astrología a los doce años. Durante casi dos décadas ha sido la lente con la que veo el mundo — y a mí misma.","about.p2": "Se puso seria en 2020. Cuando el mundo se detuvo y todos tuvimos que mirar hacia adentro y enfrentar lo que habíamos guardado, sentí una necesidad profunda de entenderme: ¿quién soy y cuál es mi propósito aquí? La astrología fue la herramienta que de verdad lo respondió.","about.p3": "Desde entonces he ayudado a muchísimas personas a conocerse mejor, a encontrar un sentido real de control sobre su camino y a entender los dones con los que nacieron y las energías a su disposición.","about.p4": "Cada lectura sucede como debe ser — con un café, un té o la bebida que prefieras. En persona en Tallin, u online desde donde estés.","about.sig": "— nos vemos bajo las estrellas, MD ✦","faq.label": "Bueno saber","faq.h2": "Preguntas,<br>respondidas","faq.p": "Todo lo que quizá te preguntas antes de reservar. ¿Sigues con dudas? Solo escríbeme.","faq.q1": "¿Necesito saber mi hora exacta de nacimiento?","faq.q2": "¿Dónde son las lecturas en persona?","faq.q3": "¿En qué idiomas haces las lecturas?","faq.q4": "Soy totalmente nueva en la astrología. ¿Está bien?","faq.q5": "¿Cómo me preparo?","faq.q6": "¿Qué lectura debería elegir?","faq.a1": "Para tu carta completa — incluyendo tu Luna y tu Ascendente — sí, incluso una hora aproximada ayuda mucho. Sin ella igual puedo leer tu Sol y los planetas más lentos. Revisa tu acta de nacimiento, o dame un rango aproximado y trabajamos con eso.","faq.a2": "En Tallin, con un café, un té o la bebida que prefieras — te comparto el lugar al reservar. ¿No estás en Tallin? Leo para personas de todo el mundo por video, y es igual de cercano.","faq.a3": "Inglés y español — el que sientas más tuyo. Solo dímelo al reservar.","faq.a4": "Más que bien — es mi tipo de lectura favorita. Todo es en palabras claras, sin símbolos que memorizar antes. Tú te traes a ti misma y tus preguntas; yo traigo el mapa.","faq.a5": "Trae tres cosas: tu fecha, tu hora y tu ciudad de nacimiento — además de las preguntas que tengas en mente. Eso es todo lo que necesito para leer tu cielo.","faq.a6": "¿Nueva en tu carta? Empieza con el <b>House Blend</b> — tu carta natal completa. ¿Te interesa el año que viene? El <b>Refill</b> lee tu revolución solar. ¿Te preguntas por una relación? <b>Perfect Pairing</b> mira dos cartas juntas.","book.label": "Reserva tu lugar","book.h2": "leamos tu cielo <span class=\"amp\">&amp;</span> sirvamos una bebida","book.p": "Elige dónde prefieres que nos veamos, escoge una hora y dime qué lectura quieres. Yo traigo la carta — tú traes las preguntas.","book.loc1": "☕ En persona · Tallin","book.loc2": "✦ Online · donde sea","journal.label": "El diario","journal.h2": "Notas desde<br>bajo el cielo","journal.p": "Astrología en palabras claras — lo que tu carta, los planetas y la luna significan de verdad en la vida real. Notas nuevas a menudo.","foot.tag": "Astrología por MD. Lecturas de carta con un café o un té — en Tallin u online.","card.cta": "Reservar →","foot.readings": "Lecturas","foot.more": "Más","foot.find": "Encuéntranos","card.about": "¿De qué se trata?","jtag.the_basics": "Lo básico","jtag.start_here": "Empieza aquí","jtag.know_yourself": "Conócete","jtag.big_moments": "Grandes momentos","jtag.no_panic": "Sin pánico","jtag.rhythms": "Ritmos","jtag.your_purpose": "Tu propósito","jtag.love": "Amor","jtag.compatibility": "Compatibilidad","jtag.your_year": "Tu año","jtag.where_to_live": "Dónde vivir","jtag.soft_life": "Vida suave","jtag.deep_cuts": "A fondo","ph.name": "ej. María","ph.city": "ej. Ciudad de México, México"};
+(function(){
+  const nodes=[...document.querySelectorAll('[data-i18n]')];
+  const phNodes=[...document.querySelectorAll('[data-i18n-ph]')];
+  const EN={}, ENph={};
+  nodes.forEach(n=>{ EN[n.getAttribute('data-i18n')]=n.innerHTML; });
+  phNodes.forEach(n=>{ ENph[n.getAttribute('data-i18n-ph')]=n.getAttribute('placeholder')||''; });
+  function apply(lang){
+    document.documentElement.lang=lang;
+    nodes.forEach(n=>{ const k=n.getAttribute('data-i18n'); n.innerHTML=(lang==='es'&&I18N_ES[k])?I18N_ES[k]:EN[k]; });
+    phNodes.forEach(n=>{ const k=n.getAttribute('data-i18n-ph'); n.setAttribute('placeholder',(lang==='es'&&I18N_ES[k])?I18N_ES[k]:ENph[k]); });
+    document.querySelectorAll('[data-lang-btn]').forEach(b=>b.classList.toggle('active',b.getAttribute('data-lang-btn')===lang));
+    try{ localStorage.setItem('lang',lang); }catch(e){}
+    window.__lang=lang;
+    document.dispatchEvent(new CustomEvent('langchange',{detail:lang}));
+  }
+  let saved=null; try{ saved=localStorage.getItem('lang'); }catch(e){}
+  apply(saved==='es'?'es':'en');
+  document.querySelectorAll('[data-lang-btn]').forEach(b=>b.addEventListener('click',()=>apply(b.getAttribute('data-lang-btn'))));
 })();
 </script>
 </body>
