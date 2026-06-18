@@ -155,6 +155,8 @@
     max-width:540px;font-size:clamp(1rem,2.4vw,1.22rem);color:var(--ink-soft);
     margin:18px auto 8px;font-weight:500;
   }
+  .hero-note{font-family:'Caveat',cursive;font-weight:600;font-size:1.4rem;color:var(--hot);
+    margin:14px auto 0;max-width:520px;transform:rotate(-1.2deg);min-height:1.4em}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:26px}
   .btn{
     font-family:'Hanken Grotesk',sans-serif;font-weight:700;font-size:1rem;
@@ -349,6 +351,21 @@
   .foot-col a:hover{color:var(--pink)}
   .foot-bottom{margin-top:34px;border-top:1px solid #34322c;padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#807b70;font-size:.82rem}
 
+  /* ===== sky right now ===== */
+  #sky{background:var(--green);color:var(--cream);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+  #sky .sec-head .label{color:var(--lime)}
+  #sky .sec-head h2{color:var(--cream-2)}
+  #sky .sec-head p{color:var(--pink-soft)}
+  .sky-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+  @media(max-width:880px){.sky-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:480px){.sky-grid{grid-template-columns:repeat(2,1fr)}}
+  .sky-chip{border:1.6px solid rgba(244,239,227,.45);border-radius:14px;padding:16px 12px;text-align:center;background:rgba(244,239,227,.06)}
+  .sky-chip .scg{font-size:1.7rem;line-height:1}
+  .sky-chip .scp{font-weight:700;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--lime);margin:8px 0 3px}
+  .sky-chip .scs{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.02rem;color:var(--cream-2);line-height:1.1}
+  .sky-chip .scsub{font-size:.74rem;color:var(--pink-soft);margin-top:2px}
+  .sky-note{margin-top:24px;text-align:center;font-family:'Caveat',cursive;font-size:1.5rem;color:var(--pink-soft);max-width:640px;margin-left:auto;margin-right:auto;line-height:1.35}
+
   /* ===== how it works ===== */
   #how{background:var(--cream)}
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -480,6 +497,7 @@
     <div class="eyebrow">astrology, served slow</div>
     <h1 class="display">sip <span class="amp">&amp;</span> <span class="stars">stars</span></h1>
     <p class="hero-sub">Pull up a chair. I read the sky you were born under — over a coffee, tea, or drink of your choice. In person in Tallinn, or online from anywhere.</p>
+    <p class="hero-note" id="dailyNote" aria-live="polite"></p>
     <div class="hero-cta">
       <a href="#book" class="btn btn-primary">Book a reading →</a>
       <a href="#calculator" class="btn btn-ghost">Calculate your chart</a>
@@ -662,6 +680,21 @@
         <p class="result-cta">Curious what it all <em>means</em>? <a href="#book">Book a House Blend reading →</a></p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- SKY RIGHT NOW -->
+<section id="sky">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="label">Live overhead</div>
+        <h2 class="display">The sky<br>right now</h2>
+      </div>
+      <p id="skyDate">Calculated live from real astronomical data — the same sky over your cup as you read this.</p>
+    </div>
+    <div class="sky-grid" id="skyGrid"></div>
+    <p class="sky-note" id="skyNote"></p>
   </div>
 </section>
 
@@ -1273,6 +1306,85 @@ if(saveBtn) saveBtn.addEventListener('click', ()=>{
   };
   img.src=svg64;
 });
+
+/* ---------- THE SKY RIGHT NOW (live transits) ---------- */
+function moonPhase(angle){
+  const a=mod360(angle);
+  const phases=[
+    [22.5,'New Moon','🌑'],[67.5,'Waxing Crescent','🌒'],[112.5,'First Quarter','🌓'],
+    [157.5,'Waxing Gibbous','🌔'],[202.5,'Full Moon','🌕'],[247.5,'Waning Gibbous','🌖'],
+    [292.5,'Last Quarter','🌗'],[337.5,'Waning Crescent','🌘'],[360,'New Moon','🌑']
+  ];
+  for(const [lim,name,emoji] of phases){ if(a<lim) return {name,emoji}; }
+  return {name:'New Moon',emoji:'🌑'};
+}
+(function renderSky(){
+  const grid=document.getElementById('skyGrid'); if(!grid) return;
+  const now=new Date();
+  const dS=julian(now.getTime())-2451543.5;
+  const sun=sunPos(dS), moonL=moonLon(dS,sun);
+  const phase=moonPhase(moonL-sun.lon);
+  const mSign=signOf(moonL), sSign=signOf(sun.lon);
+  const bodies=[
+    {glyph:phase.emoji,name:'Moon',sign:mSign,sub:phase.name},
+    {glyph:'☉',name:'Sun',sign:sSign,sub:''},
+    {glyph:'☿',name:'Mercury',sign:signOf(planetLon(PLANETS[0],dS,sun)),sub:''},
+    {glyph:'♀',name:'Venus',sign:signOf(planetLon(PLANETS[1],dS,sun)),sub:''},
+    {glyph:'♂',name:'Mars',sign:signOf(planetLon(PLANETS[2],dS,sun)),sub:''},
+    {glyph:'♃',name:'Jupiter',sign:signOf(planetLon(PLANETS[3],dS,sun)),sub:''}
+  ];
+  grid.innerHTML=bodies.map(b=>
+    '<div class="sky-chip"><div class="scg">'+b.glyph+'</div>'+
+    '<div class="scp">'+b.name+'</div>'+
+    '<div class="scs">'+b.sign.glyph+' '+b.sign.name+'</div>'+
+    (b.sub?'<div class="scsub">'+b.sub+'</div>':'')+'</div>'
+  ).join('');
+  const dateStr=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('skyDate').textContent='Today, '+dateStr+' — calculated live from real astronomical data, the same sky over your cup right now.';
+  document.getElementById('skyNote').textContent=
+    'The Moon is gliding through '+mSign.name+' ('+phase.name.toLowerCase()+') while the Sun sits in '+sSign.name+'. '+
+    mSign.name+' moods: '+mSign.trait+'.';
+})();
+
+/* ---------- DAILY NOTE FROM THE SKY ---------- */
+(function dailyNote(){
+  const el=document.getElementById('dailyNote'); if(!el) return;
+  const notes=[
+    "Today's a good day to want what you actually want.",
+    "Drink the water. Answer the text. Trust the nudge.",
+    "You don't have to earn your rest. Take it anyway.",
+    "The thing you're overthinking already knows its answer.",
+    "Soft is not the opposite of strong. Be both today.",
+    "Say the kind thing out loud before the moment passes.",
+    "Your pace is not behind. It's just yours.",
+    "Let today be enough. You've done more than you think.",
+    "The right people don't need you smaller. Take up the room.",
+    "Curiosity over judgement — about others, and about yourself.",
+    "What you keep circling back to is trying to tell you something.",
+    "Begin badly if you must, but begin.",
+    "Rest is productive. The moon doesn't apologise for being half full.",
+    "Protect your morning. The whole day leans on it.",
+    "You're allowed to change your mind and call it growth.",
+    "Tend the small thing today. It compounds.",
+    "Feelings are data, not orders. Read them, then choose.",
+    "Someone needs the warmth only you give. Spend it freely.",
+    "The pressure you feel is mostly self-issued. You can lower it.",
+    "Make the decision from who you're becoming, not who you've been.",
+    "Slow is a strategy, not a setback.",
+    "Notice what made you feel like yourself today. Do more of that.",
+    "You can be grateful and still want more. Both are true.",
+    "Pour the good cup. Sit by the window. Let it be a ritual.",
+    "Your softness survived everything. That's the strength.",
+    "Don't shrink the dream to fit today's fear.",
+    "Answer one brave email. Future you is begging.",
+    "The stars incline; they don't compel. Today is still yours to write.",
+    "Let it be easy where it can be easy.",
+    "You are not too much. You were just near the wrong people."
+  ];
+  const start=Date.UTC(new Date().getUTCFullYear(),0,0);
+  const doy=Math.floor((Date.now()-start)/86400000);
+  el.textContent='✦ '+notes[doy%notes.length];
+})();
 
 /* ---------- BOOKING (Calendly) ---------- */
 /* Calendly event URLs. Swap in a separate online-event link when ready. */
