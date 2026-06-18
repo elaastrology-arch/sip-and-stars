@@ -366,6 +366,29 @@
   .sky-chip .scsub{font-size:.74rem;color:var(--pink-soft);margin-top:2px}
   .sky-note{margin-top:24px;text-align:center;font-family:'Caveat',cursive;font-size:1.5rem;color:var(--pink-soft);max-width:640px;margin-left:auto;margin-right:auto;line-height:1.35}
 
+  /* ===== compatibility taster ===== */
+  .match-sec{background:var(--pink-soft);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+  .match-sec .sec-head h2{color:var(--green)}
+  .match-card{background:var(--cream-2);border:1.8px solid var(--ink);border-radius:var(--radius);padding:26px;max-width:680px;margin:0 auto}
+  .match-card .row{margin-bottom:14px}
+  .match-result{display:none;margin-top:18px}
+  .match-result.show{display:block;animation:rise .4s ease}
+  .match-names{text-align:center;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--hot);margin-bottom:10px}
+  .match-rows{display:grid;gap:12px}
+  .mrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;border:1.6px solid var(--ink);border-radius:13px;padding:12px 10px;background:var(--cream)}
+  .mside{text-align:center}
+  .mside .msg{font-size:1.7rem;line-height:1}
+  .mside .msn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.98rem;color:var(--green);line-height:1.1}
+  .mmid{text-align:center;min-width:96px}
+  .mmid .mcat{font-weight:700;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--hot)}
+  .mmid .mmg{font-size:1.15rem;color:var(--hot);line-height:1}
+  .mmid .mmw{font-size:.72rem;font-weight:600;color:var(--ink-soft)}
+  .match-verdict{margin-top:16px;text-align:center;background:var(--green);color:var(--cream);border:1.8px solid var(--ink);border-radius:14px;padding:20px 18px}
+  .match-verdict .mv-score{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;color:var(--lime)}
+  .match-verdict p{margin-top:6px;font-weight:500;max-width:440px;margin-left:auto;margin-right:auto}
+  .match-verdict .btn{margin-top:16px;background:var(--hot);color:var(--cream-2);border-color:var(--ink)}
+  .match-verdict .btn:hover{background:var(--cream-2);color:var(--green)}
+
   /* ===== how it works ===== */
   #how{background:var(--cream)}
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -695,6 +718,28 @@
     </div>
     <div class="sky-grid" id="skyGrid"></div>
     <p class="sky-note" id="skyNote"></p>
+  </div>
+</section>
+
+<!-- COMPATIBILITY TASTER -->
+<section id="match" class="match-sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="label">Cosmic chemistry</div>
+        <h2 class="display">Do your<br>stars align?</h2>
+      </div>
+      <p>A free taste of synastry. Drop in two birthdays and see how your core, love and spark signs play together — then book a Perfect Pairing for the whole, honest story.</p>
+    </div>
+    <div class="match-card">
+      <div class="row">
+        <div class="field"><label for="m1">You — birth date</label><input type="date" id="m1" min="1900-01-01" max="2025-12-31"></div>
+        <div class="field"><label for="m2">Them — birth date</label><input type="date" id="m2" min="1900-01-01" max="2025-12-31"></div>
+      </div>
+      <button class="calc-btn" id="matchBtn">See your chemistry →</button>
+      <div class="calc-status" id="matchStatus"></div>
+      <div class="match-result" id="matchResult"></div>
+    </div>
   </div>
 </section>
 
@@ -1384,6 +1429,63 @@ function moonPhase(angle){
   const start=Date.UTC(new Date().getUTCFullYear(),0,0);
   const doy=Math.floor((Date.now()-start)/86400000);
   el.textContent='✦ '+notes[doy%notes.length];
+})();
+
+/* ---------- COMPATIBILITY TASTER ---------- */
+function quickSigns(dateStr){
+  const [Y,Mo,Da]=dateStr.split('-').map(Number);
+  const dS=julian(Date.UTC(Y,Mo-1,Da,12,0))-2451543.5; // noon; signs only
+  const sun=sunPos(dS);
+  return {sun:signOf(sun.lon), venus:signOf(planetLon(PLANETS[1],dS,sun)), mars:signOf(planetLon(PLANETS[2],dS,sun))};
+}
+const ELEMENT={Aries:'fire',Leo:'fire',Sagittarius:'fire',Taurus:'earth',Virgo:'earth',Capricorn:'earth',
+  Gemini:'air',Libra:'air',Aquarius:'air',Cancer:'water',Scorpio:'water',Pisces:'water'};
+function pairVerdict(a,b){
+  const e1=ELEMENT[a.name], e2=ELEMENT[b.name];
+  if(e1===e2) return {pts:2,word:'easy harmony',glyph:'♥'};
+  if((e1==='fire'&&e2==='air')||(e1==='air'&&e2==='fire')||(e1==='earth'&&e2==='water')||(e1==='water'&&e2==='earth'))
+    return {pts:2,word:'electric',glyph:'✦'};
+  return {pts:1,word:'a learning curve',glyph:'↻'};
+}
+(function matchInit(){
+  const btn=document.getElementById('matchBtn'); if(!btn) return;
+  const statusEl=document.getElementById('matchStatus');
+  function setMS(m,err){ statusEl.textContent=m||''; statusEl.classList.toggle('err',!!err); }
+  btn.addEventListener('click',function(){
+    const d1=document.getElementById('m1').value, d2=document.getElementById('m2').value;
+    if(!d1||!d2){ setMS('Add both birth dates to see your chemistry.',true); return; }
+    setMS('');
+    const c1=quickSigns(d1), c2=quickSigns(d2);
+    const rows=[['Core self','☉',c1.sun,c2.sun],['How you love','♀',c1.venus,c2.venus],['Your spark','♂',c1.mars,c2.mars]];
+    let total=0;
+    const rowsHTML=rows.map(([cat,g,s1,s2])=>{
+      const v=pairVerdict(s1,s2); total+=v.pts;
+      return '<div class="mrow">'+
+        '<div class="mside"><div class="msg">'+s1.glyph+'</div><div class="msn">'+s1.name+'</div></div>'+
+        '<div class="mmid"><div class="mcat">'+cat+'</div><div class="mmg">'+v.glyph+'</div><div class="mmw">'+v.word+'</div></div>'+
+        '<div class="mside"><div class="msg">'+s2.glyph+'</div><div class="msn">'+s2.name+'</div></div>'+
+      '</div>';
+    }).join('');
+    const verdicts={
+      6:'Cosmic best friends. The chemistry here is loud — and easy.',
+      5:'Real spark. This one flows more than it fights.',
+      4:'Lovely potential, with just enough spice to stay interesting.',
+      3:'Different wiring — which can read as magnetic or maddening, depending on the day.',
+      2:'Opposites that attract and challenge. Plenty to learn from each other here.'
+    };
+    const result=document.getElementById('matchResult');
+    result.innerHTML=
+      '<div class="match-names">You ✦ Them</div>'+
+      '<div class="match-rows">'+rowsHTML+'</div>'+
+      '<div class="match-verdict">'+
+        '<div class="mv-score">'+total+' / 6 sparks</div>'+
+        '<p>'+(verdicts[total]||verdicts[3])+'</p>'+
+        '<p style="font-size:.86rem;opacity:.85">This is just three placements out of dozens. The real chemistry lives in the whole picture.</p>'+
+        '<a href="#book" class="btn">Read it properly — book a Perfect Pairing →</a>'+
+      '</div>';
+    result.classList.add('show');
+    result.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
 })();
 
 /* ---------- BOOKING (Calendly) ---------- */
