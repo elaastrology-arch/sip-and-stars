@@ -1,5 +1,5 @@
 /* sip & stars service worker — offline-friendly caching */
-const CACHE = 'sipandstars-v1';
+const CACHE = 'sipandstars-v3';
 const ASSETS = [
   './',
   './index.html',
