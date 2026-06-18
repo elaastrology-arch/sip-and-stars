@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
 <style>
   :root{
     --cream:#F4EFE3; --cream-2:#FBF8F0; --pink:#F2A8C8; --pink-soft:#F7C4DA;
@@ -185,7 +186,8 @@
 <!-- ===== REPORT ===== -->
 <div id="report">
   <div class="report-actions">
-    <button class="mini-btn primary" onclick="window.print()">⤓ Save as PDF</button>
+    <button class="mini-btn primary" id="pdfBtn">⤓ Download PDF</button>
+    <button class="mini-btn" onclick="window.print()">🖨 Print</button>
     <button class="mini-btn" id="sendBtn">✦ Send to MD</button>
     <button class="mini-btn" onclick="location.reload()">↺ New report</button>
   </div>
@@ -649,6 +651,7 @@ async function generate(){
 
   /* stash a summary for the "send to MD" button */
   window.__reportSummary = buildSummary(name,type,dateStr,label,noTime,placements,houseOf,deg,full);
+  window.__reportName = name;
 }
 
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -677,6 +680,26 @@ byId('sendBtn').addEventListener('click', async ()=>{
   }
   /* fallback: open email with the data prefilled */
   location.href='mailto:elaastrology@gmail.com?subject='+encodeURIComponent('Birth chart report — '+ (window.__reportName||'client'))+'&body='+encodeURIComponent(summary);
+});
+
+/* One-click PDF download */
+byId('pdfBtn').addEventListener('click', async ()=>{
+  const btn=byId('pdfBtn'), orig=btn.textContent;
+  if(typeof html2pdf==='undefined'){ window.print(); return; }
+  btn.textContent='Generating…'; btn.disabled=true;
+  try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; }catch(e){}
+  const slug=(window.__reportName||'birth-chart').toString().trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'report';
+  try{
+    await html2pdf().set({
+      margin:0,
+      filename:'sip-and-stars-'+slug+'.pdf',
+      image:{type:'jpeg',quality:0.96},
+      html2canvas:{scale:2,useCORS:true,backgroundColor:'#F4EFE3',scrollY:0},
+      jsPDF:{unit:'pt',format:'a4',orientation:'portrait'},
+      pagebreak:{mode:['avoid-all','css','legacy']}
+    }).from(byId('reportBody')).save();
+  }catch(e){ window.print(); }
+  btn.textContent=orig; btn.disabled=false;
 });
 
 </script>
