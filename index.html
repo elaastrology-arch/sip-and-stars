@@ -706,15 +706,15 @@
   </div>
 </section>
 
-<!-- SKY RIGHT NOW -->
+<!-- TODAY'S POUR (live sky) -->
 <section id="sky">
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <div class="label">Live overhead</div>
-        <h2 class="display">The sky<br>right now</h2>
+        <div class="label">On the board today</div>
+        <h2 class="display">Today's<br>pour</h2>
       </div>
-      <p id="skyDate">Calculated live from real astronomical data — the same sky over your cup as you read this.</p>
+      <p id="skyDate">What the sky's serving right now — poured straight from where the planets actually are. The same sky that's over your cup.</p>
     </div>
     <div class="sky-grid" id="skyGrid"></div>
     <p class="sky-note" id="skyNote"></p>
@@ -727,16 +727,16 @@
     <div class="sec-head">
       <div>
         <div class="label">Cosmic chemistry</div>
-        <h2 class="display">Do your<br>stars align?</h2>
+        <h2 class="display">Two cups,<br>one table</h2>
       </div>
-      <p>A free taste of synastry. Drop in two birthdays and see how your core, love and spark signs play together — then book a Perfect Pairing for the whole, honest story.</p>
+      <p>A little taste of how two charts blend — your core, your love, your spark, side by side. Just a sip; the full pour is a Perfect Pairing reading over a drink.</p>
     </div>
     <div class="match-card">
       <div class="row">
         <div class="field"><label for="m1">You — birth date</label><input type="date" id="m1" min="1900-01-01" max="2025-12-31"></div>
         <div class="field"><label for="m2">Them — birth date</label><input type="date" id="m2" min="1900-01-01" max="2025-12-31"></div>
       </div>
-      <button class="calc-btn" id="matchBtn">See your chemistry →</button>
+      <button class="calc-btn" id="matchBtn">Taste the blend →</button>
       <div class="calc-status" id="matchStatus"></div>
       <div class="match-result" id="matchResult"></div>
     </div>
@@ -1385,10 +1385,10 @@ function moonPhase(angle){
     (b.sub?'<div class="scsub">'+b.sub+'</div>':'')+'</div>'
   ).join('');
   const dateStr=now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
-  document.getElementById('skyDate').textContent='Today, '+dateStr+' — calculated live from real astronomical data, the same sky over your cup right now.';
+  document.getElementById('skyDate').textContent='Serving '+dateStr+' — poured fresh from where the planets actually are, the same sky over your cup right now.';
   document.getElementById('skyNote').textContent=
-    'The Moon is gliding through '+mSign.name+' ('+phase.name.toLowerCase()+') while the Sun sits in '+sSign.name+'. '+
-    mSign.name+' moods: '+mSign.trait+'.';
+    'Today the Moon is steeping in '+mSign.name+' ('+phase.name.toLowerCase()+') and the Sun is sitting in '+sSign.name+'. '+
+    'A '+mSign.name+' kind of mood: '+mSign.trait+'.';
 })();
 
 /* ---------- DAILY NOTE FROM THE SKY ---------- */
@@ -1480,8 +1480,8 @@ function pairVerdict(a,b){
       '<div class="match-verdict">'+
         '<div class="mv-score">'+total+' / 6 sparks</div>'+
         '<p>'+(verdicts[total]||verdicts[3])+'</p>'+
-        '<p style="font-size:.86rem;opacity:.85">This is just three placements out of dozens. The real chemistry lives in the whole picture.</p>'+
-        '<a href="#book" class="btn">Read it properly — book a Perfect Pairing →</a>'+
+        '<p style="font-size:.86rem;opacity:.85">Just a sip — three placements out of dozens. The real chemistry lives in the whole cup.</p>'+
+        '<a href="#book" class="btn">Pour the full reading — book a Perfect Pairing →</a>'+
       '</div>';
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
