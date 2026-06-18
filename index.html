@@ -968,6 +968,7 @@ function ascendant(d, lat, lonEast){
   return mod360(deg(asc));
 }
 const signOf=lon=>SIGNS[Math.floor(mod360(lon)/30)];
+const ordinal=n=>{const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);};
 
 /* offset (minutes east of UTC) for an IANA tz at a given instant */
 function tzOffsetMin(date, tz){
@@ -1161,9 +1162,12 @@ async function run(){
   /* {glyph, planet, rules, lon} — big three first, then the rest */
   const placements=[];
   placements.push({pg:'☉',planet:'Sun',rules:'the way you shine',lon:sun.lon});
+  let ascSignIdx=null;
   if(!noTime){
+    const ascLon=ascendant(dJ,lat,lon);
+    ascSignIdx=Math.floor(mod360(ascLon)/30);
     placements.push({pg:'☽',planet:'Moon',rules:'the way you feel',lon:moonLon(dS,sun)});
-    placements.push({pg:'↑',planet:'Rising',rules:'the way you arrive',lon:ascendant(dJ,lat,lon)});
+    placements.push({pg:'↑',planet:'Rising',rules:'the way you arrive',lon:ascLon});
   }
   PLANETS.forEach(p=>placements.push({pg:p.glyph,planet:p.key,rules:p.rules,lon:planetLon(p,dS,sun)}));
   placements.push({pg:'♇',planet:'Pluto',rules:'the way you transform',lon:plutoLon(dS,sun)});
@@ -1173,11 +1177,13 @@ async function run(){
   box.innerHTML='';
   placements.forEach(({pg,planet,rules,lon})=>{
     const s=signOf(lon), deg=Math.floor(mod360(lon)%30);
+    /* whole-sign house: count signs from the Rising sign (needs birth time) */
+    const house = ascSignIdx===null ? null : ((Math.floor(mod360(lon)/30)-ascSignIdx+12)%12)+1;
     const div=document.createElement('div');
     div.className='place';
     div.innerHTML='<div class="pg">'+s.glyph+'</div><div class="pt">'+
       '<div class="role">'+pg+' '+planet+', '+rules+'</div>'+
-      '<div class="sign">'+s.name+'<span class="deg">'+deg+'°</span></div>'+
+      '<div class="sign">'+s.name+'<span class="deg">'+deg+'°'+(house?' · '+ordinal(house)+' house':'')+'</span></div>'+
       '<div class="trait">'+s.trait+'</div></div>';
     box.appendChild(div);
   });
