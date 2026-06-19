@@ -1270,11 +1270,13 @@ async function run(){
   /* {glyph, planet, rules, lon} — big three first, then the rest */
   const placements=[];
   placements.push({pg:'☉',planet:'Sun',rules:'the way you shine',lon:sun.lon});
+  /* Moon shows even without a birth time — the Moon sign is almost always right
+     from the date alone (it only changes sign every ~2.5 days). */
+  placements.push({pg:'☽',planet:'Moon',rules:'the way you feel',lon:moonLon(dS,sun)});
   let ascSignIdx=null;
   if(!noTime){
     const ascLon=ascendant(dJ,lat,lon);
     ascSignIdx=Math.floor(mod360(ascLon)/30);
-    placements.push({pg:'☽',planet:'Moon',rules:'the way you feel',lon:moonLon(dS,sun)});
     placements.push({pg:'↑',planet:'Rising',rules:'the way you arrive',lon:ascLon});
   }
   PLANETS.forEach(p=>placements.push({pg:p.glyph,planet:p.key,rules:p.rules,lon:planetLon(p,dS,sun)}));
@@ -1304,7 +1306,7 @@ async function run(){
     L((name?name+', here':'Here')+"'s your pour"+(label?' · '+label:''),
       (name?name+', aquí tienes':'Aquí tienes')+' tu taza'+(label?' · '+label:''));
   document.getElementById('result').classList.add('show');
-  setStatus(noTime?L('Add a birth time for your Moon & Rising — the rest is ready.','Añade tu hora de nacimiento para la Luna y el Ascendente — lo demás está listo.'):'');
+  setStatus(noTime?L('Add a birth time for your Rising sign — your Moon is estimated for midday.','Añade tu hora de nacimiento para el Ascendente — tu Luna está estimada al mediodía.'):'');
   document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 

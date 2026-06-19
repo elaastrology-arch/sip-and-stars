@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Birth Chart Report — sip &amp; stars</title>
 <meta name="robots" content="noindex">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
@@ -657,9 +660,10 @@ async function generate(){
   let ascLon=null, ascIdx=null;
   const placements=[];
   placements.push({pg:'☉',planet:'Sun',lon:sun.lon});
+  /* Moon always shows — its sign is reliable from the date alone */
+  placements.push({pg:'☽',planet:'Moon',lon:moonLon(dS,sun)});
   if(!noTime){
     ascLon=ascendant(dJ,lat,lon); ascIdx=Math.floor(mod360(ascLon)/30);
-    placements.push({pg:'☽',planet:'Moon',lon:moonLon(dS,sun)});
     placements.push({pg:'↑',planet:'Rising',lon:ascLon});
   }
   PLANETS.forEach(p=>placements.push({pg:p.glyph,planet:p.key,lon:planetLon(p,dS,sun)}));
