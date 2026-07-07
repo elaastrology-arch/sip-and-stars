@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /report.html
 
-Sitemap: https://elaastrology-arch.github.io/sip-and-stars/sitemap.xml
+Sitemap: https://elastrology.com/sitemap.xml

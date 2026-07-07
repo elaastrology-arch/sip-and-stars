@@ -10,7 +10,7 @@ runs this after adding an article so Google can index each note individually.
 import re, html, os, datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE = "https://elaastrology-arch.github.io/sip-and-stars"
+BASE = "https://elastrology.com"
 SRC  = os.path.join(ROOT, "index.html")
 OUT  = os.path.join(ROOT, "journal")
 
