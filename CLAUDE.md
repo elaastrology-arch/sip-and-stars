@@ -9,7 +9,7 @@ Bilingual (EN/ES) astrology-readings website for MD (Maria Daniela, IG @mdmundi,
 
 ## Architecture
 - **`index.html` is the whole site** — all HTML/CSS/JS/articles inline, no build step, no framework.
-- `report.html` — standalone 13-section birth-chart report generator; PDF via html2pdf.js; unlock code **ELASTARS** (`const FULL_CODE`).
+- `report.html` — standalone 13-section birth-chart report generator; PDF via html2pdf.js; the unlock code lives in `const FULL_CODE` in report.html. **Never write the code's value in this file or any doc** — GitHub Pages serves every repo file publicly, including this CLAUDE.md.
 - `sw.js` — service worker; **bump the cache name** (`sipandstars-vN`) whenever a change must reach clients immediately.
 - `tools/build_articles.py` — **run after adding/editing any article**; regenerates `journal/*.html` (one indexable page per article, EN+ES), `sitemap.xml`, `robots.txt`. Commit its output.
 - Astro engine: Schlyter low-precision J2000 (verified accurate). Whole-sign houses. Moon computed date-only (no birth time needed); Rising needs time.
@@ -40,6 +40,7 @@ Bilingual (EN/ES) astrology-readings website for MD (Maria Daniela, IG @mdmundi,
 4. Before any push: check tag balance (`<section`/`</section>`, `<em>`/`</em>`, `<div>`/`</div>` counts), I18N_ES parses, and no broken onclick ids.
 5. Beware regex-wide edits on index.html — a past one deleted commas before dots and silently broke CSS/JS sitewide.
 6. Prices/brand/astro math: don't change unless MD asks.
+7. **Security**: anything from user input or an external API must go through `esc()` before touching `innerHTML` (helper exists in both index.html and report.html). Both pages ship a `<meta http-equiv="Content-Security-Policy">` — adding a new external script/style/API domain requires updating it or the resource silently fails. External scripts must be version-pinned with an `integrity` (SRI) hash. Fonts are self-hosted in `/fonts` — never reintroduce fonts.googleapis.com links (EU/GDPR). No secrets in any repo file: the public repo AND the live site serve everything, including this CLAUDE.md.
 
 ## Voice
 Warm, witty, plain-language, lightly literary. Café metaphors woven in, never forced. No jargon. The reader is an astrology-curious millennial/Gen-Z woman.

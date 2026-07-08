@@ -54,9 +54,8 @@ PAGE = """<!DOCTYPE html>
 "author":{{"@type":"Person","name":"MD (Maria Daniela)","url":"{base}/#about"}},
 "publisher":{{"@type":"Organization","name":"sip & stars","logo":{{"@type":"ImageObject","url":"{base}/icons/icon-512.png"}}}}}}
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'">
+<link href="../fonts/fonts.css" rel="stylesheet">
 <style>
 :root{{--cream:#F4EFE3;--cream-2:#FBF8F0;--pink:#F2A8C8;--hot:#E55C9A;--green:#1C6B41;--lime:#CDEF49;--ink:#181712;--ink-soft:#4A473E}}
 *{{box-sizing:border-box;margin:0;padding:0}}

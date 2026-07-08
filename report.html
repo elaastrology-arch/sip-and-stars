@@ -8,11 +8,10 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://api.open-meteo.com https://geocoding-api.open-meteo.com https://photon.komoot.io https://formspree.io; object-src 'none'; base-uri 'self'">
+<link href="fonts/fonts.css" rel="stylesheet">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous"></script>
 <style>
   :root{
     --cream:#F4EFE3; --cream-2:#FBF8F0; --pink:#F2A8C8; --pink-soft:#F7C4DA;
@@ -368,7 +367,7 @@ function tzOffsetMin(date, tz){
 }
 
 const statusEl=document.getElementById('status');
-function setStatus(msg,err){ statusEl.textContent=msg||''; statusEl.classList.toggle('err'!!err); }
+function setStatus(msg,err){ statusEl.textContent=msg||''; statusEl.classList.toggle('err', !!err); }
 
 /* resolve an IANA timezone from coordinates (open-meteo, DST-aware downstream) */
 async function tzFromCoords(lat,lon){
@@ -533,7 +532,7 @@ const HOUSE_KW = {1:"Self, identity & first impressions",2:"Money, values & self
 const PLANET_DOMAIN = {Sun:"Identity & vitality",Moon:"Emotions & needs",Rising:"How you meet the world",Mercury:"Mind & communication",Venus:"Love & values",Mars:"Drive & desire",Jupiter:"Growth & luck",Saturn:"Discipline & lessons",Uranus:"Change & freedom",Neptune:"Dreams & intuition",Pluto:"Power & transformation"};
 const ELEM_COLOR = {fire:'var(--fire)',earth:'var(--earth)',air:'var(--air)',water:'var(--water)'};
 const TYPE_LABEL = {blend:"House Blend · Full Birth Chart",refill:"The Refill · Year Ahead",pairing:"Perfect Pairing · Compatibility",taster:"Free Taster"};
-const FULL_CODE = "ELASTARS";  /* the unlock code MD shares with paying clients (change anytime) */
+const FULL_CODE = "SIPTHESKY";  /* the unlock code MD shares with paying clients (change anytime) */
 /* ---------- ENRICHED CONTENT ---------- */
 const PLANET_FACETS = {
   mercury:{
@@ -603,7 +602,7 @@ const ASPECT_DEF = [
 /* ---------- RENDER ---------- */
 const ord = n => { const s=['th','st','nd','rd'], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); };
 const byId = id => document.getElementById(id);
-function setStatus(m,err){ byId('rstatus').textContent=m||''; byId('rstatus').classList.toggle('err'!!err); }
+function setStatus(m,err){ byId('rstatus').textContent=m||''; byId('rstatus').classList.toggle('err', !!err); }
 
 byId('rnotime').addEventListener('change',()=>{ byId('rtime').disabled=byId('rnotime').checked; if(byId('rnotime').checked)byId('rtime').value=''; });
 
