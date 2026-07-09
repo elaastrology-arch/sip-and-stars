@@ -713,7 +713,7 @@ async function generate(){
       <div class="tip"><span class="tl">Try this in your day-to-day</span><p>${d.tip}</p></div></div>`;
   });
   html+=`<section class="page"><div class="eyebrow">The headline of you</div><h2>Your Big Three</h2>
-    <p class="lead">Sun, Moon and Rising, the three placements that explain most of why you feel like <em>you</em>. Your core, your inner world, and the energy people meet first.</p>
+    <p class="lead">Sun, Moon, and Rising, the three placements that explain most of why you feel like <em>you</em>. Your core, your inner world, and the energy people meet first.</p>
     <div class="big3">${b3html}</div></section>`;
 
   if(full){
@@ -723,14 +723,14 @@ async function generate(){
     pp.forEach(([key,role,field])=>{ const plp=placements.find(p=>p.planet===key); if(!plp)return; const s=signOf(plp.lon);
       pphtml+=`<div class="pcard"><div class="pgl">${s.glyph}</div><div><div class="prole">${role}</div><div class="psn">${key} in ${s.name}${houseOf(plp.lon)?' · '+ord(houseOf(plp.lon))+' house':''}</div><p>${PLANET_FACETS[field][s.name]}</p></div></div>`; });
     html+=`<section class="page"><div class="eyebrow">Beyond the big three</div><h2>Your Personal Planets</h2>
-      <p class="lead">Mercury, Venus and Mars are the fast, intimate planets, the everyday <em>you</em>: how your mind works, how you love, and how you go after what you want.</p>
+      <p class="lead">Mercury, Venus, and Mars are the fast, intimate planets, the everyday <em>you</em>: how your mind works, how you love, and how you go after what you want.</p>
       <div class="pcards">${pphtml}</div></section>`;
     /* ASPECTS */
     const asp=computeAspects(placements).slice(0,6);
     if(asp.length){ let ah='';
       asp.forEach(x=>{ ah+=`<div class="aspect"><div class="ah"><span class="ag">${x.a.glyph}</span>${x.p1} ${x.a.name.toLowerCase()} ${x.p2}</div><p>Your <b>${(PLANET_DOMAIN[x.p1]||'').toLowerCase()}</b> and your <b>${(PLANET_DOMAIN[x.p2]||'').toLowerCase()}</b> sit in ${x.a.flavor}, ${x.a.guide}</p></div>`; });
       html+=`<section class="page"><div class="eyebrow">The conversations in your chart</div><h2>Your Key Aspects</h2>
-        <p class="lead">Planets don't act alone, they talk to one another. Aspects are the angles between them: the harmonies, tensions and deep collaborations that shape how your chart actually <em>feels</em> from the inside.</p>
+        <p class="lead">Planets don't act alone, they talk to one another. Aspects are the angles between them: the harmonies, tensions, and deep collaborations that shape how your chart actually <em>feels</em> from the inside.</p>
         <div class="asp">${ah}</div></section>`; }
     /* NORTH NODE */
     const nodeLon=northNode(dS), nodeS=signOf(nodeLon), nh=houseOf(nodeLon);

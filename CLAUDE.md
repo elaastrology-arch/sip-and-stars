@@ -44,6 +44,7 @@ Bilingual (EN/ES) astrology-readings website for MD (Maria Daniela, IG @mdmundi,
 
 ## Voice
 Warm, witty, plain-language, lightly literary. Café metaphors woven in, never forced. No jargon. The reader is an astrology-curious millennial/Gen-Z woman.
+**Full brand voice guide: `VOICE.md`** (personality, messaging pillars, tone spectrum, style rules). Read it before writing any new copy. Key style rules: Oxford comma always; sentence-case headings; second person; solar return (The Refill, read from where you'll spend your next birthday) is the signature offering.
 
 ## Scheduled automation (runs while the Claude app is open)
 - `daily-seo-article` (09:01) — writes + publishes one bilingual article/day; instructions at `~/.claude/scheduled-tasks/daily-seo-article/SKILL.md`.
