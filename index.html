@@ -608,6 +608,94 @@
   .reader-foot{margin-top:30px;padding-top:24px;border-top:1.6px solid rgba(28,107,65,.2);text-align:center}
   .reader-foot .meta{font-weight:500;color:var(--ink-soft);font-size:.92rem;margin-bottom:16px}
 
+  /* ================= MINIMAL PASS =================
+     Poster-style restyle: cream air, two inks (green + pink),
+     handwritten script accents, hairlines instead of ink outlines,
+     no offset shadows. Overrides the component rules above so the
+     original design stays intact underneath and is easy to revert. */
+  :root{--line:rgba(28,107,65,.20)}
+
+  /* handwritten section labels, like a note in the margin */
+  .sec-head .label,.calc-intro .label,.snap-intro .label,.book .label{
+    font-family:'Caveat',cursive;text-transform:none;letter-spacing:.01em;
+    font-size:1.5rem;font-weight:600;color:var(--hot);margin-bottom:8px;transform:rotate(-1.2deg)}
+  #sky .sec-head .label{color:var(--pink-soft)}
+
+  /* nav: hairline, script byline, borderless pill */
+  nav{border-bottom:1px solid var(--line)}
+  .pill-md{background:none;border:none;font-family:'Caveat',cursive;font-weight:600;
+    font-size:1.15rem;letter-spacing:0;text-transform:none;color:var(--hot);transform:rotate(-3deg);padding:0}
+  .nav-book{border:none}
+  .lang-toggle{border:1px solid var(--line)}
+
+  /* buttons: solid or hairline, never ink-outlined */
+  .btn{border:1.5px solid transparent}
+  .btn-ghost{border-color:var(--green)}
+  .mini-btn{border:1px solid var(--line)}
+  .calc-btn{border:none}
+  .adv-toggle{color:var(--green)}
+
+  /* marquee + trust: quiet cream strips instead of solid bands */
+  .marquee{background:transparent;color:var(--green);border-top:1px solid var(--line);border-bottom:none;margin-top:18px;padding:10px 0}
+  .marquee-track span::after{color:var(--hot)}
+  .trust{background:transparent;color:var(--ink);border-top:none;border-bottom:1px solid var(--line);padding:26px 0}
+  .trust .tnum{color:var(--green)}
+  .trust .tlabel{color:var(--ink-soft)}
+
+  /* cards: soft blocks, no outlines, no slab shadows */
+  .card,.calc-card,.faq-item,.jcard,.snap-card,.pay-btn,.match-card,.step,
+  .about-collage__quote,.about-collage__hero,.about-collage__secondary,
+  .place,.mrow,.book-toggle{border:none;box-shadow:none}
+  .card{border-radius:24px}
+  .card .card-incl{background:none;border:none;padding:6px 0 0;color:inherit;opacity:.8;font-weight:600}
+  .card.c3 .price{color:var(--cream-2)}
+  .card.c3 .card-cta{color:var(--pink-soft)}
+  .jcard{background:var(--cream-2)}
+  .jart{border-bottom:none}
+  .jcard.j2 .jart{color:var(--cream-2)}
+  .jcard.j5 .jart{background:var(--pink-soft)}
+  .faq-item{background:var(--cream-2);border-radius:16px}
+  .step{background:var(--cream-2)}
+  .place{background:var(--cream-2)}
+  .mrow{background:var(--cream-2)}
+
+  /* calculator: softer pink, hairline inputs */
+  .calc-sec{background:var(--pink-soft);border-top:none;border-bottom:none}
+  .field input,.field select{border:1px solid var(--line);background:var(--cream-2)}
+  .calc-perks{background:none;border:none;font-family:'Caveat',cursive;font-weight:600;
+    font-size:1.3rem;letter-spacing:0;color:var(--green);padding:0;transform:rotate(-1deg)}
+  .ac-list{border:1px solid var(--line);box-shadow:0 14px 34px rgba(24,23,18,.12)}
+  .check input{accent-color:var(--hot)}
+
+  /* sky: keep the night-green moment, soften the chips */
+  #sky{border-top:none;border-bottom:none}
+  .sky-chip{border:none;background:rgba(244,239,227,.10)}
+  .sky-chip .scp{color:var(--pink-soft)}
+
+  /* booking: airy, no chips-with-borders */
+  .book{border-top:none}
+  .book-secure{border:none;background:none}
+  .pay-btn{background:var(--cream-2);border-radius:18px}
+  .pay-btn:hover{box-shadow:none;background:var(--pink-soft);transform:translateY(-2px)}
+  .pay-price{background:none;border:none;color:var(--green);padding:1px 0}
+  .cal-placeholder{border:1.5px dashed var(--line)}
+  .cal-placeholder code{border:1px solid var(--line)}
+
+  /* about: paper photos, no ink frames */
+  .hl{background:var(--pink-soft);border:none;transform:rotate(-1.5deg)}
+  .about-collage__hero,.about-collage__secondary{border-radius:10px}
+
+  /* philosophy + reader: soft depth instead of offset slabs */
+  .reader-inner{border:none;box-shadow:0 24px 70px rgba(24,23,18,.25)}
+  .reader-close{border:none}
+  .reader-foot{border-top:1px solid var(--line)}
+
+  /* footer: two inks only */
+  .foot-brand .mark .amp{color:var(--pink)}
+  .foot-col h4{color:var(--pink)}
+
+  /* snapshot card sits flat on the cream */
+  .snap-card{background:var(--cream-2)}
 </style>
 </head>
 <body>
